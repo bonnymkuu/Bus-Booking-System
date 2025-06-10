@@ -1,7 +1,10 @@
+// src/pages/Auth/Register.jsx
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+// Removed Link and useNavigate from react-router-dom
+// import { Link, useNavigate } from 'react-router-dom';
 
-export default function Register() {
+// Receive navigateTo as a prop
+export default function Register({ navigateTo }) {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -10,7 +13,7 @@ export default function Register() {
     confirmPassword: '',
   });
   const [error, setError] = useState('');
-  const navigate = useNavigate();
+  // Removed navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,7 +38,8 @@ export default function Register() {
 
     console.log('User registered:', formData);
     alert('Registration successful!');
-    navigate('/login');
+    // Use navigateTo instead of navigate
+    navigateTo('login');
   };
 
   return (
@@ -177,9 +181,9 @@ export default function Register() {
         {/* Login link */}
         <p className="text-center mt-3">
           Already have an account?{' '}
-          <Link to="/login" className="text-danger">
+          <a href="#" onClick={() => navigateTo('login')} className="text-danger">
             Login
-          </Link>
+          </a>
         </p>
       </div>
     </div>

@@ -1,15 +1,23 @@
-import { Link, NavLink } from 'react-router-dom';
-import logo from '../assets/images/logo.png'; 
+// src/components/Header.jsx
+import logo from '../assets/images/logo.png';
 
-export default function Header() {
+export default function Header({ navigateTo }) {
+  // Simplified active state logic;
+  // you might need to pass currentView from App.jsx down to Header
+  // to implement actual active class logic based on the current view.
+  const isActive = (viewName) => {
+    // This function can be expanded if currentView is passed as a prop
+    // return currentView === viewName;
+    return false;
+  };
+
   return (
-    <header className="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm"> {/* Bootstrap dark navbar, shadow */}
-      <div className="container"> {/* Bootstrap container for responsiveness */}
-        <Link to="/" className="navbar-brand d-flex align-items-center"> {/* Bootstrap navbar-brand for logo/site title */}
-          <img src={logo} alt="BuscarKenya Logo" className="me-2" style={{ height: '5.5rem' }} /> {/* Logo image with Bootstrap margin-end */}
-        </Link>
+    <header className="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+      <div className="container">
+        <a href="#" onClick={() => navigateTo('home')} className="navbar-brand d-flex align-items-center">
+          <img src={logo} alt="BuscarKenya Logo" className="me-2" style={{ height: '5.5rem' }} />
+        </a>
 
-        {/* Navbar Toggler for mobile */}
         <button
           className="navbar-toggler"
           type="button"
@@ -22,66 +30,70 @@ export default function Header() {
           <span className="navbar-toggler-icon"></span>
         </button>
 
-        {/* Navbar Collapse for menu items */}
         <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav ms-auto mb-2 mb-lg-0"> {/* Bootstrap nav classes, margin-start auto to push to right, margin-bottom */}
+          <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <NavLink
-                to="/"
-                className={({ isActive }) => `nav-link ${isActive ? 'active text-danger' : 'text-white'}`} // Bootstrap active class for current page
-                aria-current="page"
-                end
+              <a
+                href="#"
+                onClick={() => navigateTo('home')}
+                className={`nav-link ${isActive('home') ? 'active text-danger' : 'text-white'}`}
               >
                 Home
-              </NavLink>
+              </a>
             </li>
             <li className="nav-item">
-              <NavLink
-                to="/about"
-                className={({ isActive }) => `nav-link ${isActive ? 'active text-danger' : 'text-white'}`}
+              <a
+                href="#"
+                onClick={() => navigateTo('about')}
+                className={`nav-link ${isActive('about') ? 'active text-danger' : 'text-white'}`}
               >
                 About Us
-              </NavLink>
+              </a>
             </li>
             <li className="nav-item">
-              <NavLink
-                to="/contact"
-                className={({ isActive }) => `nav-link ${isActive ? 'active text-danger' : 'text-white'}`}
+              <a
+                href="#"
+                onClick={() => navigateTo('contact')}
+                className={`nav-link ${isActive('contact') ? 'active text-danger' : 'text-white'}`}
               >
                 Contact Us
-              </NavLink>
+              </a>
             </li>
             <li className="nav-item">
-              <NavLink
-                to="/print-ticket"
-                className={({ isActive }) => `nav-link ${isActive ? 'active text-danger' : 'text-white'}`}
+              <a
+                href="#"
+                onClick={() => navigateTo('printTicket')}
+                className={`nav-link ${isActive('printTicket') ? 'active text-danger' : 'text-white'}`}
               >
                 Print Ticket
-              </NavLink>
+              </a>
             </li>
             <li className="nav-item">
-              <NavLink
-                to="/gallery"
-                className={({ isActive }) => `nav-link ${isActive ? 'active text-danger' : 'text-white'}`}
+              <a
+                href="#"
+                onClick={() => navigateTo('gallery')}
+                className={`nav-link ${isActive('gallery') ? 'active text-danger' : 'text-white'}`}
               >
                 Gallery
-              </NavLink>
+              </a>
             </li>
             <li className="nav-item">
-              <NavLink
-                to="/privacy" // Assuming this path exists
-                className={({ isActive }) => `nav-link ${isActive ? 'active text-danger' : 'text-white'}`}
+              <a
+                href="#"
+                onClick={() => navigateTo('privacy')}
+                className={`nav-link ${isActive('privacy') ? 'active text-danger' : 'text-white'}`}
               >
                 Privacy
-              </NavLink>
+              </a>
             </li>
+            {/* Re-added Sign In/Register button */}
             <li className="nav-item">
-              <NavLink
-                to="/login"
-                className="btn btn-warning text-dark ms-lg-3" // Bootstrap button, margin-start for large screens
+              <button
+                onClick={() => navigateTo('login')}
+                className="btn btn-warning text-dark ms-lg-3"
               >
                 Sign In/Register
-              </NavLink>
+              </button>
             </li>
           </ul>
         </div>

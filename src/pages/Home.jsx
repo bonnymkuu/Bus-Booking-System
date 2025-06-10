@@ -1,35 +1,40 @@
+// src/pages/Home.jsx
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import ORoutes from '../assets/images/our_routes.png'; 
-import seat from '../assets/images/seat.png'; 
-import power from '../assets/images/power.png'; 
-import vip from '../assets/images/vip.png'; 
-import wifi from '../assets/images/wifi.png'; 
-import earn from '../assets/images/earn.png'; 
-import save from '../assets/images/save.png'; 
-import multiple from '../assets/images/multiple.png'; 
-import parcel from '../assets/images/parcel.png'; 
-import fleet from '../assets/images/fleet.png'; 
-import busRoutes from '../assets/images/bus_route.png'; 
-import yellowPromoBg from '../assets/images/yellow_promo.png'; // Assuming this is the yellow promo background image
-import googlePlayBadge from '../assets/images/google_play_badge.png'; // Assuming filename for Google Play badge
-import appStoreBadge from '../assets/images/app_store_badge.png';   // Assuming filename for App Store badge
-import bossLogo from '../assets/images/boss_logo.png';             // Assuming filename for BOSS logo
-import volticsLogo from '../assets/images/voltics_logo.svg';       // Assuming filename for VOLTICS logo
+// Removed useNavigate - not needed anymore for component-based navigation
+import ORoutes from '../assets/images/our_routes.png';
+import seat from '../assets/images/seat.png';
+import power from '../assets/images/power.png';
+import vip from '../assets/images/vip.png';
+import wifi from '../assets/images/wifi.png';
+import earn from '../assets/images/earn.png';
+import save from '../assets/images/save.png';
+import multiple from '../assets/images/multiple.png';
+import parcel from '../assets/images/parcel.png';
+import fleet from '../assets/images/fleet.png';
+import busRoutes from '../assets/images/bus_route.png';
+import yellowPromoBg from '../assets/images/yellow_promo.png';
+import googlePlayBadge from '../assets/images/google_play_badge.png';
+import appStoreBadge from '../assets/images/app_store_badge.png';
+import bossLogo from '../assets/images/boss_logo.png';
+import volticsLogo from '../assets/images/voltics_logo.svg';
 
-
-export default function Home() {
+// Receive navigateTo as a prop
+export default function Home({ navigateTo }) {
   const [searchParams, setSearchParams] = useState({
     from: '',
     to: '',
     date: new Date().toISOString().split('T')[0],
     passengers: 1
   });
-  const navigate = useNavigate();
 
   const handleSearch = (e) => {
     e.preventDefault();
-    navigate(`/routes?from=${searchParams.from}&to=${searchParams.to}&date=${searchParams.date}`);
+    // Use navigateTo to switch to 'routesList' view and pass search parameters
+    navigateTo('routesList', {
+      from: searchParams.from,
+      to: searchParams.to,
+      date: searchParams.date
+    });
   };
 
   return (
@@ -125,24 +130,23 @@ export default function Home() {
           <small>Power Outlets</small>
         </div>
         <div className="text-center">
-          {/* Using 'seat' for extra legroom, or replace with a specific legroom icon if available */}
           <img src={seat} alt="Legroom Icon" className="d-block mx-auto mb-1" style={{ width: '60px', height: '60px' }} />
           <small>Extra Legroom</small>
         </div>
       </div>
 
       {/* Yellow Promo Section (from screenshot) */}
-      <div className="container text-center py-5 my-5" style={{ 
-        backgroundImage: `url(${yellowPromoBg})`, 
-        backgroundSize: 'cover', 
-        backgroundPosition: 'center', 
+      <div className="container text-center py-5 my-5" style={{
+        backgroundImage: `url(${yellowPromoBg})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
         borderRadius: '15px',
-        minHeight: '250px', // Adjust as needed
+        minHeight: '250px',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        color: 'white' // Assuming text color on yellow background
+        color: 'white'
       }}>
         <h2 className="display-6 fw-bold mb-3">Buy your travel tickets hustle free</h2>
         <h3 className="h4 mb-4">TRAVEL TO MOMBASA</h3>
@@ -181,7 +185,7 @@ export default function Home() {
       {/* Our Services Section */}
       <div className="container py-5">
         <h3 className="text-center mb-5 fw-bold">Our Services</h3>
-        <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4"> {/* Adjusted columns for 3 items for parcel, fleet, routes */}
+        <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
           <div className="col">
             <div className="card text-center h-100 shadow-sm p-3 border-0">
               <img src={parcel} alt="Parcel Delivery" className="card-img-top mx-auto" style={{ maxWidth: '100%', height: 'auto' }} />
@@ -213,8 +217,8 @@ export default function Home() {
       </div>
 
       {/* App Download and Partner Logos */}
-      <div className="container py-5 text-center" style={{display: 'flex', justifyContent: 'space-between'}}>
-        <div className="d-flex justify-content-center mb-4 flex-wrap gap-3">
+      <div className="container py-5 text-center d-flex flex-column flex-md-row justify-content-between align-items-center">
+        <div className="d-flex justify-content-center mb-4 mb-md-0 flex-wrap gap-3">
           <a href="#" target="_blank" rel="noopener noreferrer">
             <img src={googlePlayBadge} alt="Get it on Google Play" style={{ height: '60px' }} />
           </a>
@@ -225,7 +229,6 @@ export default function Home() {
         <div className="d-flex justify-content-center align-items-center gap-4 flex-wrap">
           <img src={bossLogo} alt="BOSS Logo" style={{ height: '50px' }} />
           <img src={volticsLogo} alt="VOLTICS Logo" style={{ height: '50px' }} />
-          {/* You can add text like "Legit • Safe • Secure" next to BOSS if needed using Bootstrap classes */}
         </div>
       </div>
     </div>

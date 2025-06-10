@@ -1,6 +1,7 @@
-import { Link } from 'react-router-dom';
+import React from "react";
 
-export default function Bookings() {
+// Receive navigateTo as a prop
+export default function Bookings({ navigateTo }) {
   // Mock data - in a real app you'd fetch user's bookings
   const bookings = [
     {
@@ -45,14 +46,16 @@ export default function Bookings() {
       <div className="max-w-4xl mx-auto">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold">My Bookings</h2>
-          <Link 
-            to="/routes" 
+          {/* Use navigateTo instead of Link */}
+          <a
+            href="#"
+            onClick={() => navigateTo('routes')}
             className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md transition duration-300"
           >
             Book New Trip
-          </Link>
+          </a>
         </div>
-        
+
         {bookings.length === 0 ? (
           <div className="bg-white rounded-lg shadow-md p-8 text-center">
             <svg className="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -60,12 +63,14 @@ export default function Bookings() {
             </svg>
             <h3 className="text-xl font-bold mb-2">No Bookings Yet</h3>
             <p className="text-gray-600 mb-4">You haven't made any bookings yet. Start by searching for routes.</p>
-            <Link 
-              to="/routes" 
+            {/* Use navigateTo instead of Link */}
+            <a
+              href="#"
+              onClick={() => navigateTo('routes')}
               className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-md transition duration-300"
             >
               Find Buses
-            </Link>
+            </a>
           </div>
         ) : (
           <div className="space-y-6">
@@ -92,15 +97,15 @@ export default function Bookings() {
                     </div>
                     <div className="mt-2 md:mt-0">
                       <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                        booking.status === 'confirmed' ? 'bg-green-100 text-green-800' : 
-                        booking.status === 'cancelled' ? 'bg-red-100 text-red-800' : 
+                        booking.status === 'confirmed' ? 'bg-green-100 text-green-800' :
+                        booking.status === 'cancelled' ? 'bg-red-100 text-red-800' :
                         'bg-yellow-100 text-yellow-800'
                       }`}>
                         {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
                       </span>
                     </div>
                   </div>
-                  
+
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                     <div>
                       <div className="text-gray-500 text-sm">Operator</div>
@@ -123,7 +128,7 @@ export default function Bookings() {
                       <div className="font-medium">{booking.route.busType}</div>
                     </div>
                   </div>
-                  
+
                   <div className="border-t border-gray-200 pt-4">
                     <h4 className="font-bold mb-3">Passengers</h4>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -139,7 +144,7 @@ export default function Bookings() {
                       ))}
                     </div>
                   </div>
-                  
+
                   <div className="border-t border-gray-200 mt-4 pt-4 flex justify-between items-center">
                     <div className="font-bold text-lg">
                       Total: KSh {booking.totalAmount.toLocaleString()}

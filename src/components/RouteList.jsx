@@ -1,16 +1,20 @@
-import { useLocation } from 'react-router-dom';
+// src/components/RouteList.jsx
+// Removed useLocation
 import RouteCard from './RouteCard';
 
-export default function RoutesList() {
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
+// Receive searchParams as a prop
+export default function RoutesList({ searchParams, navigateTo }) {
+  // Use searchParams from props instead of URL
+  const from = searchParams.from || 'Nairobi';
+  const to = searchParams.to || 'Mombasa';
+  const date = searchParams.date || new Date().toISOString().split('T')[0];
 
   const routes = [
     {
       id: 1,
       company: 'Modern Coast',
-      from: searchParams.get('from') || 'Nairobi',
-      to: searchParams.get('to') || 'Mombasa',
+      from: from,
+      to: to,
       departure: '08:00 AM',
       arrival: '02:00 PM',
       price: 1200,
@@ -20,8 +24,8 @@ export default function RoutesList() {
     {
       id: 2,
       company: 'Mash Poa',
-      from: searchParams.get('from') || 'Nairobi',
-      to: searchParams.get('to') || 'Mombasa',
+      from: from,
+      to: to,
       departure: '10:30 AM',
       arrival: '04:30 PM',
       price: 1000,
@@ -31,8 +35,8 @@ export default function RoutesList() {
     {
       id: 3,
       company: 'Easy Coach',
-      from: searchParams.get('from') || 'Nairobi',
-      to: searchParams.get('to') || 'Mombasa',
+      from: from,
+      to: to,
       departure: '07:00 AM',
       arrival: '01:00 PM',
       price: 1500,
@@ -42,13 +46,13 @@ export default function RoutesList() {
   ];
 
   return (
-    <div className="container mx-auto px-4 py-5"> {/* Bootstrap container, padding */}
-      <div className="d-flex justify-content-between align-items-center mb-4"> {/* Bootstrap flex, justify content, alignment, margin-bottom */}
-        <h2 className="h4 fw-bold"> {/* Bootstrap heading, font-weight */}
-          {searchParams.get('from') || 'Nairobi'} to {searchParams.get('to') || 'Mombasa'} Routes
+    <div className="container mx-auto px-4 py-5">
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <h2 className="h4 fw-bold">
+          {from} to {to} Routes
         </h2>
-        <div className="text-secondary"> {/* Bootstrap text color */}
-          {new Date(searchParams.get('date') || new Date()).toLocaleDateString('en-US', {
+        <div className="text-secondary">
+          {new Date(date).toLocaleDateString('en-US', {
             weekday: 'long',
             year: 'numeric',
             month: 'long',
@@ -56,10 +60,11 @@ export default function RoutesList() {
           })}
         </div>
       </div>
-      
-      <div className="d-grid gap-4"> {/* Using Bootstrap grid-gap (or simply gap utility in newer Bootstrap) */}
+
+      <div className="space-y-6">
         {routes.map(route => (
-          <RouteCard key={route.id} route={route} />
+          // You might need to pass navigateTo down to RouteCard if it has navigation
+          <RouteCard key={route.id} route={route} navigateTo={navigateTo} />
         ))}
       </div>
     </div>
