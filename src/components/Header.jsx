@@ -2,12 +2,7 @@
 import logo from '../assets/images/logo.png';
 
 export default function Header({ navigateTo }) {
-  // Simplified active state logic;
-  // you might need to pass currentView from App.jsx down to Header
-  // to implement actual active class logic based on the current view.
   const isActive = (viewName) => {
-    // This function can be expanded if currentView is passed as a prop
-    // return currentView === viewName;
     return false;
   };
 
@@ -15,7 +10,7 @@ export default function Header({ navigateTo }) {
     <header className="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
       <div className="container">
         <a href="#" onClick={() => navigateTo('home')} className="navbar-brand d-flex align-items-center">
-          <img src={logo} alt="BuscarKenya Logo" className="me-2" style={{ height: '5.5rem' }} />
+          <img src={logo} alt="BuscarKenya Logo" className="me-2" style={{ height: '4.5rem' }} />
         </a>
 
         <button

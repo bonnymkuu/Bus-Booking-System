@@ -63,7 +63,7 @@ export default function PrintTicket() {
 
       <div className="position-relative" style={{ zIndex: 1 }}>
         <div className="d-flex flex-column align-items-center mb-4">
-          <img src={Ticket} alt="Ticket" />
+          <img src={Ticket} alt="Ticket" className='sizing'/>
           <h2 className="text-center h3 fw-bold mb-4">Print Ticket</h2>
         </div>
 

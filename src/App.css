@@ -14,20 +14,87 @@
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+.fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.fade-in.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.fade-switch {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.fade-switch.show {
+  opacity: 1;
+}
+.route-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 35rem;
+  overflow: hidden;
+}
+
+.route-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  transition: opacity 0.8s ease-in-out;
+  opacity: 0;
+}
+
+.route-image.active {
+  opacity: 1;
+  z-index: 2;
+}
+
+@media (max-width: 768px) {
+  .responsive-section {
+    flex-direction: column !important;
+    gap: 1rem;
   }
-  to {
-    transform: rotate(360deg);
+
+  .booking-block,
+  .promo-block {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 300px;
+    border-radius: 15px !important;
+    overflow: hidden;
+  }
+
+  .promo-block {
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .promo-block button {
+    font-size: 1rem;
+    padding: 0.75rem 2rem;
+  }
+
+  .sizing{
+    width: 200px;
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
 
 .card {
   padding: 2em;
