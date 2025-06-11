@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'; 
 import ORoutes from '../assets/images/our_routes.png';
-import BuscarTicket from '../assets/images/Buscar_ticket_booking.png';
+import BuscarTicket from '../assets/images/buscar_ticket_booking.png';
 import seat from '../assets/images/seat.png';
 import power from '../assets/images/power.png';
 import vip from '../assets/images/vip.png';
