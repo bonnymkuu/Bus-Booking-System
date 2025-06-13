@@ -17,24 +17,28 @@ import AdminLayout from './pages/Admin/AdminLayout.jsx';
 import MpesaPayment from './pages/MpesaPayment.jsx';
 
 // Assuming RouteCard and RoutesList
-import RoutesList from './components/RouteList.jsx';
+import RoutesList from './components/RouteList.jsx'; // Corrected path to RoutesList if it's in components
+import NotFound from './pages/NotFound.jsx';
+
 
 // This component will render the appropriate "page" based on currentView prop
 export default function ContentRenderer({ currentView, searchParams, navigateTo }) {
-  // Removed the local state for bookingDetails in ContentRenderer.
-  // The searchParams passed from navigateTo already contain the bookingDetails
-  // when navigating to 'mpesaPayment'.
+  // searchParams prop from the parent (e.g., App.jsx) already contains the data
+  // for the current view, be it search parameters or booking details.
 
   switch (currentView) {
     case 'home':
       return <Home navigateTo={navigateTo} />;
     case 'routesList':
-      return <RoutesList searchParams={searchParams} navigateTo={navigateTo} />;
+      // FIX: Pass searchParams as initialSearchParams
+      return <RoutesList initialSearchParams={searchParams} navigateTo={navigateTo} />;
     case 'book':
       // For the 'book' page, searchParams is used for currentSearchParams
+      // This is correct as currentSearchParams prop in Book expects the details
       return <Book navigateTo={navigateTo} currentSearchParams={searchParams} />;
     case 'mpesaPayment':
       // Directly pass searchParams as bookingDetails to MpesaPayment
+      // This is correct as bookingDetails prop in MpesaPayment expects the details
       return <MpesaPayment navigateTo={navigateTo} bookingDetails={searchParams} />;
     case 'bookings':
       return <Bookings navigateTo={navigateTo} />;
@@ -52,6 +56,8 @@ export default function ContentRenderer({ currentView, searchParams, navigateTo 
       return <Gallery />;
     case 'contact':
       return <Contact />;
+    case 'notFound':
+      return <NotFound navigateTo={navigateTo}/>;  
     case 'adminDashboard':
       return <AdminLayout><AdminDashboard /></AdminLayout>;
     case 'adminRoutes':
@@ -61,6 +67,6 @@ export default function ContentRenderer({ currentView, searchParams, navigateTo 
     case 'adminUsers':
       return <AdminLayout><div>Users Management</div></AdminLayout>;
     default:
-      return <div>404 Not Found</div>;
+      return <NotFound navigateTo={navigateTo}/>;
   }
 }

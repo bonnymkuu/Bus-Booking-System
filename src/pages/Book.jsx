@@ -2,10 +2,15 @@ import React, { useState, useEffect } from 'react';
 import emptySeat from '../assets/images/empty_seat.png';
 import selectedSeat from '../assets/images/booked_seat.png';
 import bookedSeat from '../assets/images/selected_seat.png';
+// Import the external CSS file
+import '../styles/Book.css'; // Adjust path if your styles folder is elsewhere
+import Button from '../components/Button';
 
 
 export default function Book({ navigateTo, currentSearchParams }) {
   const routeId = currentSearchParams?.id;
+  const originLocationFromRoutes = currentSearchParams?.originLocation; // Get origin from search params
+  const destinationLocationFromRoutes = currentSearchParams?.destinationLocation; 
 
   // Define the base seat layout with unique numbers up to 45, removing 46 and 47.
   // Seat 45 is now a regular, potentially selectable seat.
@@ -90,6 +95,10 @@ export default function Book({ navigateTo, currentSearchParams }) {
 
   const [route, setRoute] = useState(initialRouteData);
   const [selectedSeats, setSelectedSeats] = useState([]);
+  // Make boarding/dropping points optional by initializing to empty string
+  const [selectedBoardingPoint, setSelectedBoardingPoint] = useState('');
+  const [selectedDroppingPoint, setSelectedDroppingPoint] = useState('');
+
 
   // Assuming 'normal' is the default fare type from the screenshot example.
   const [fareType, setFareType] = useState('normal');
@@ -140,6 +149,10 @@ export default function Book({ navigateTo, currentSearchParams }) {
       company: route.company,
       departureTime: route.departureTime,
       arrivalTime: route.arrivalTime,
+      boardingPoint: selectedBoardingPoint, // Pass selected boarding point (can be empty)
+      droppingPoint: selectedDroppingPoint, // Pass selected dropping point (can be empty)
+      originLocation: originLocationFromRoutes, // Pass the main origin
+      destinationLocation: destinationLocationFromRoutes, // Pass the main destination
     };
     navigateTo('mpesaPayment', bookingDetails);
   };
@@ -214,7 +227,7 @@ export default function Book({ navigateTo, currentSearchParams }) {
                     <img src={emptySeat} style={{width: '50px', height: '50px'}}/>
                     <span>Available Seat</span>
                 </div>
-                
+
                 <div className="legend-item">
                   <img src={selectedSeat} style={{width: '50px', height: '50px'}}/>
                   <span>Selected Seats</span>
@@ -269,121 +282,15 @@ export default function Book({ navigateTo, currentSearchParams }) {
         </div>
 
         <div className="card-footer d-flex justify-content-end align-items-center p-0"> {/* Footer for Continue button */}
-          <button
+          <Button
             onClick={handleContinueToPayment}
-            className="btn btn-success rounded-0"
-            disabled={selectedSeats.length === 0}
-            style={{ width: '150px', height: '50px', fontSize: '1.1rem' }}
+            iconClass="bi bi-chevron-right"
+            disabled={selectedSeats.length === 0} // Only disable if no seats are selected
           >
-            CONTINUE <i className="bi bi-chevron-right ms-2"></i>
-          </button>
+            CONTINUE
+          </Button>
         </div>
       </div>
-
-      <style jsx>{`
-        .container {
-          max-width: 1200px; /* Adjust if needed */
-        }
-
-        /* Top right close button */
-        .cursor-pointer {
-          cursor: pointer;
-        }
-
-        /* Fare Legend Dots */
-        .fare-legend-dot {
-          display: inline-block;
-          width: 10px;
-          height: 10px;
-          border-radius: 50%;
-          margin-right: 8px;
-          vertical-align: middle;
-        }
-        .fare-legend-dot.vip { background-color: #ffc107; } /* yellow */
-        .fare-legend-dot.bclass { background-color: #6c757d; } /* grey */
-        .fare-legend-dot.normal { background-color: #0d6efd; } /* blue */
-
-
-                /* Seat Map Grid Layout for 45 seats */
-        .seat-map-grid {
-            display: grid;
-            /* Layout for 45 seats based on the screenshot pattern (11 columns per row, 5 rows) */
-            grid-template-areas:
-                "s4  s8  s12 s16 s20 s24 s28 s32 s36 s40   s45" /* Row 1 */
-                "s3  s7  s11 s15 s19 s23 s27 s31 s35 s39   s44" /* Row 2 */
-                ".   .   .   .   .   .   .   .   .   .     s43" /* Row 3 - isolated 43 */
-                "s2  s6  s10 s14 s18 s22 s26 s30 s34 s38   s42" /* Row 4 */
-                "s1  s5  s9  s13 s17 s21 s25 s29 s33 s37   s41"; /* Row 5 */
-
-            gap: 5px 3px; /* Keep consistent gap, might need minor tweaks after size increase */
-            padding: 10px;
-            background-color: #fff9e6; /* yellow-subtle */
-            border-radius: 8px;
-            position: relative;
-            justify-content: start;
-            align-items: center;
-            /* ADJUSTED: Column widths to accommodate larger seats */
-            grid-template-columns: repeat(10, 60px) 60px; /* Increased from 45px to 60px */
-            grid-template-rows: repeat(5, 60px); /* Increased from 45px to 60px */
-        }
-
-        .seat {
-            width: 60px; /* ADJUSTED: Fixed width of the seat */
-            height: 60px; /* ADJUSTED: Fixed height of the seat */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            border-radius: 4px;
-            /* font-size and font-weight are now primarily set on .seat-number */
-            user-select: none;
-            overflow: hidden;
-        }
-
-        .seat-image {
-            width: 100%;
-            height: 100%;
-            object-fit: fill; /* Make image stretch to fill the seat div completely */
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 1; /* Image behind the number */
-        }
-
-        .seat-number {
-            position: relative;
-            z-index: 2; /* Number above the image */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            height: 100%;
-            font-size: 1.1rem; /* ADJUSTED: Larger font size for numbers */
-            font-weight: bold; /* Keep bold for visibility */
-            color: black; /* Default color for numbers */
-            text-shadow: 0 0 2px rgba(255,255,255,0.7); /* Good for visibility over varied backgrounds */
-        }
-
-        /* Adjust number color based on seat status for better contrast */
-        .seat.selected .seat-number,
-        .seat.booked .seat-number {
-             color: white; /* Assuming selected/booked images might be darker */
-             text-shadow: 0 0 2px rgba(0,0,0,0.7);
-        }
-
-        /* Hover effect for empty seats */
-        .seat.empty:hover {
-            opacity: 0.9;
-            cursor: pointer;
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-        }
-
-
-        /* Right Panel styles */
-        .card-header.bg-danger {
-            background-color: #dc3545 !important;
-        }
-      `}</style>
     </div>
   );
 }

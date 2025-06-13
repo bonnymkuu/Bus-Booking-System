@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Button from '../components/Button'; // Ensure this path is correct
 
 export default function MpesaPayment({ navigateTo, bookingDetails }) {
   const {
@@ -9,12 +10,17 @@ export default function MpesaPayment({ navigateTo, bookingDetails }) {
     company,
     departureTime,
     arrivalTime,
+    boardingPoint,
+    droppingPoint,
+    originLocation,
+    destinationLocation,
   } = bookingDetails || {};
+
 
   const [passengers, setPassengers] = useState([]);
   const [showMessageBox, setShowMessageBox] = useState(false);
   const [messageText, setMessageBoxText] = useState('');
-  const [isLoading, setIsLoading] = useState(false); // New loading state
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (selectedSeats && selectedSeats.length > 0) {
@@ -51,8 +57,7 @@ export default function MpesaPayment({ navigateTo, bookingDetails }) {
     setMessageBoxText('');
   };
 
-  const handleMakePayment = async () => { // Made the function async
-    // Basic validation for passenger details
+  const handleMakePayment = async () => {
     const allFieldsFilled = passengers.every(p =>
       p.name && p.age && p.code && p.phone && p.gender && p.nationality && p.nationalId
     );
@@ -62,36 +67,26 @@ export default function MpesaPayment({ navigateTo, bookingDetails }) {
       return;
     }
 
-    // Get the primary passenger's phone number for payment
-    // Assuming the first passenger in the list is the primary payer.
     const payerPhoneNumber = passengers[0]?.phone;
-    const payerPhoneCode = passengers[0]?.code; // Get the country code
+    const payerPhoneCode = passengers[0]?.code;
 
     if (!payerPhoneNumber || !payerPhoneCode) {
       showCustomAlert('Please provide a phone number for the primary passenger to initiate payment.');
       return;
     }
 
-    setIsLoading(true); // Start loading state
-    showCustomAlert('Initiating payment... Please wait.'); // Inform user about payment initiation
+    setIsLoading(true);
+    showCustomAlert('Initiating payment... Please wait.');
 
     try {
-      // Simulate an API call to a payment gateway
-      // In a real application, this would be a fetch() call to your backend
-      // which then communicates with Mpesa or another payment provider.
       console.log(`Simulating payment for ${totalAmount} KES to ${payerPhoneCode}${payerPhoneNumber}`);
 
-      // Simulate network delay and API response
       const response = await new Promise(resolve => setTimeout(() => {
-        // Simulate a successful USSD push
         resolve({ success: true, message: `USSD push sent to ${payerPhoneCode}${payerPhoneNumber}. Please enter your Mpesa PIN on your phone.` });
-        // Simulate a payment failure
-        // resolve({ success: false, message: 'Payment initiation failed. Please try again later.' });
-      }, 3000)); // 3 second delay to simulate API call
+      }, 3000));
 
       if (response.success) {
         showCustomAlert(response.message);
-        // In a real app, you might navigate to a success page or update booking status here
       } else {
         showCustomAlert(response.message);
       }
@@ -100,13 +95,12 @@ export default function MpesaPayment({ navigateTo, bookingDetails }) {
       console.error('Payment initiation error:', error);
       showCustomAlert('An error occurred during payment. Please try again.');
     } finally {
-      setIsLoading(false); // End loading state
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="container py-4">
-      {/* Custom Alert Message Box (Bootstrap Modal like structure) */}
       {showMessageBox && (
         <div className="modal fade show d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
           <div className="modal-dialog modal-dialog-centered" role="document">
@@ -118,7 +112,7 @@ export default function MpesaPayment({ navigateTo, bookingDetails }) {
                   </div>
                 )}
                 <p className="lead mb-4">{messageText}</p>
-                {!isLoading && ( // Only show OK button when not loading
+                {!isLoading && (
                   <button
                     type="button"
                     className="btn btn-primary px-4"
@@ -139,10 +133,9 @@ export default function MpesaPayment({ navigateTo, bookingDetails }) {
         </button>
       </div>
 
-      <div className="row g-4"> {/* Use row and g-4 for gap */}
-        {/* Left Section: Passengers and Outbound Trip */}
-        <div className="col-12 col-md-7"> {/* Adjust column widths for better layout */}
-          <div className="card shadow-sm mb-4"> {/* Card for Passengers */}
+      <div className="row g-4">
+        <div className="col-12 col-md-7">
+          <div className="card shadow-sm mb-4">
             <div className="card-body">
               <h3 className="card-title h5 mb-4">Passengers</h3>
 
@@ -152,7 +145,7 @@ export default function MpesaPayment({ navigateTo, bookingDetails }) {
                     {index === 0 ? 'Primary Passenger' : `Passenger ${index + 1}`}
                     <span className="text-muted small"> Seat: {passenger.seatNumber}</span>
                   </p>
-                  <div className="row g-3"> {/* Nested row for passenger inputs */}
+                  <div className="row g-3">
                     <div className="col-sm-6">
                       <input
                         type="text"
@@ -180,7 +173,6 @@ export default function MpesaPayment({ navigateTo, bookingDetails }) {
                         <option value="">Code *</option>
                         <option value="+254">+254 (Kenya)</option>
                         <option value="+255">+255 (Tanzania)</option>
-                        {/* Add more country codes */}
                       </select>
                     </div>
                     <div className="col-sm-6">
@@ -246,35 +238,40 @@ export default function MpesaPayment({ navigateTo, bookingDetails }) {
             </div>
           </div>
 
-          <div className="card shadow-sm"> {/* Card for Outbound Trip */}
+          <div className="card shadow-sm">
             <div className="card-body">
               <h3 className="card-title h5 mb-4">Outbound Trip</h3>
-              <div className="bg-light p-3 rounded d-flex justify-content-between align-items-center text-sm mb-4">
-                <span className="fw-semibold text-success">NAIROBI to MOMBASA | 27 Jun 2025</span>
-                <span>Seat(s): {selectedSeats.join(', ')}</span>
+              <div className="bg-light p-3 rounded d-flex flex-wrap justify-content-center align-items-center text-center text-sm mb-4">
+                {/* Main route origin and destination */}
+                <span className="fw-semibold text-primary mx-1 mb-2 mb-sm-0">{originLocation || 'N/A'} to {destinationLocation || 'N/A'}</span>
+                {/* Conditionally display boarding/dropping if selected */}
+                {boardingPoint && droppingPoint && (
+                    <span className="fw-semibold text-success mx-1 mb-2 mb-sm-0">{boardingPoint} to {droppingPoint}</span>
+                )}
+                <span className="mx-1">Seat(s): {selectedSeats.join(', ')}</span>
               </div>
-              <div className="d-flex align-items-start gap-3">
-                <div className="flex-shrink-0 text-center">
+              <div className="d-flex flex-column flex-sm-row align-items-center align-items-sm-start gap-3">
+                <div className="flex-shrink-0 text-center mb-3 mb-sm-0">
                   <i className="bi bi-bus-front-fill fs-2 text-muted"></i>
                   <p className="small text-muted mb-0">{company}</p>
-                  <p className="small text-muted">NBI-MSA</p>
+                  <p className="small text-muted">{originLocation || 'N/A'}-{destinationLocation || 'N/A'}</p>
                 </div>
-                <div className="flex-grow row g-2 text-sm"> {/* Use row for inner grid */}
-                  <div className="col-4">
+                <div className="flex-grow-1 row g-2 text-sm text-center text-sm-start">
+                  <div className="col-12 col-sm-4">
                     <p className="fw-semibold mb-1">Depart</p>
-                    <p className="mb-0">NAIROBI</p>
+                    <p className="mb-0">{boardingPoint || originLocation || 'N/A'}</p>
                     <p className="text-muted small mb-0">{departureTime}</p>
                     <p className="text-muted small mb-0">Boarding</p>
-                    <p className="text-muted small">Eastleigh</p> {/* Example specific boarding point */}
+                    <p className="text-muted small">{boardingPoint || originLocation || 'N/A'}</p>
                   </div>
-                  <div className="col-4">
+                  <div className="col-12 col-sm-4">
                     <p className="fw-semibold mb-1">Arrive</p>
-                    <p className="mb-0">MOMBASA</p>
+                    <p className="mb-0">{droppingPoint || destinationLocation || 'N/A'}</p>
                     <p className="text-muted small mb-0">{arrivalTime}</p>
                     <p className="text-muted small mb-0">Dropping</p>
-                    <p className="text-muted small"></p> {/* Example specific dropping point */}
+                    <p className="text-muted small">{droppingPoint || destinationLocation || 'N/A'}</p>
                   </div>
-                  <div className="col-4 text-end">
+                  <div className="col-12 col-sm-4 text-center text-sm-end">
                     <p className="fw-semibold mb-1">Total:</p>
                     <p className="fs-5 fw-bold">{totalAmount.toLocaleString()}</p>
                   </div>
@@ -284,8 +281,7 @@ export default function MpesaPayment({ navigateTo, bookingDetails }) {
           </div>
         </div>
 
-        {/* Right Section: Trip Summary */}
-        <div className="col-12 col-md-5"> {/* Adjust column widths for better layout */}
+        <div className="col-12 col-md-5">
           <div className="card shadow-sm">
             <div className="card-body">
               <h3 className="card-title h4 mb-4">Trip Summary</h3>
@@ -298,11 +294,9 @@ export default function MpesaPayment({ navigateTo, bookingDetails }) {
                 <span>Total(inc.VAT)</span>
                 <span>KSH {totalAmount.toLocaleString()}.00</span>
               </div>
-              <button
+              <Button
                 onClick={handleMakePayment}
-                className="btn btn-danger w-100 py-3 text-white fw-bold rounded-lg" // Using btn-danger as a close match for pink, added rounded-lg for rounded corners
-                disabled={isLoading} // Disable button during loading
-                style={{ backgroundColor: '#ff69b4', borderColor: '#ff69b4' }} // Custom pink color if needed
+                disabled={isLoading}
               >
                 {isLoading ? (
                   <>
@@ -312,7 +306,7 @@ export default function MpesaPayment({ navigateTo, bookingDetails }) {
                 ) : (
                   'Make Payment'
                 )}
-              </button>
+              </Button>
             </div>
           </div>
         </div>

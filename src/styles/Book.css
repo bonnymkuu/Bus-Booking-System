@@ -1,0 +1,188 @@
+/* General styles */
+.container {
+  max-width: 1200px;
+}
+
+/* Top right close button */
+.cursor-pointer {
+  cursor: pointer;
+}
+
+/* Fare Legend Dots */
+.fare-legend-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+.fare-legend-dot.vip { background-color: #ffc107; }
+.fare-legend-dot.bclass { background-color: #6c757d; }
+.fare-legend-dot.normal { background-color: #0d6efd; }
+
+/* Seat Map Grid Layout (Desktop) */
+.seat-map-grid {
+  display: grid;
+  grid-template-areas:
+    "s4  s8  s12 s16 s20 s24 s28 s32 s36 s40   s45"
+    "s3  s7  s11 s15 s19 s23 s27 s31 s35 s39   s44"
+    ".   .   .   .   .   .   .   .   .   .     s43"
+    "s2  s6  s10 s14 s18 s22 s26 s30 s34 s38   s42"
+    "s1  s5  s9  s13 s17 s21 s25 s29 s33 s37   s41";
+  gap: 5px 3px;
+  padding: 10px;
+  background-color: #fff9e6;
+  border-radius: 8px;
+  position: relative;
+  justify-content: start;
+  align-items: center;
+  grid-template-columns: repeat(10, 60px) 60px;
+  grid-template-rows: repeat(5, 60px);
+}
+
+/* Seat styling */
+.seat {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border-radius: 4px;
+  user-select: none;
+  overflow: hidden;
+}
+
+.seat-image {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  transform: rotate(0deg); /* face up */
+}
+
+.seat-number {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: black;
+  text-shadow: 0 0 2px rgba(255,255,255,0.7);
+}
+
+.seat.selected .seat-number,
+.seat.booked .seat-number {
+  color: white;
+  text-shadow: 0 0 2px rgba(0,0,0,0.7);
+}
+
+.seat.empty:hover {
+  opacity: 0.9;
+  cursor: pointer;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Right Panel styles */
+.card-header.bg-danger {
+  background-color: #dc3545 !important;
+}
+
+/* --- Mobile Responsiveness --- */
+@media (max-width: 768px) {
+  .container {
+    padding: 5px;
+  }
+
+  .card-body.row {
+    flex-direction: column;
+  }
+
+  .col-md-8, .col-md-4 {
+    width: 100%;
+  }
+
+  .d-flex.justify-content-end.align-items-center.gap-3.mt-3 {
+    justify-content: center !important;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .legend-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    font-size: 0.8rem;
+  }
+
+  .legend-item img {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .seat-map-grid {
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-areas:
+      "s1  s2  .   s3  s4"
+      "s5  s6  .   s7  s8"
+      "s9  s10 .   s11 s12"
+      "s13 s14 .   s15 s16"
+      "s17 s18 .   s19 s20"
+      "s21 s22 .   s23 s24"
+      "s25 s26 .   s27 s28"
+      "s29 s30 .   s31 s32"
+      "s33 s34 .   s35 s36"
+      "s37 s38 .   s39 s40"
+      "s41 s42 s43 s44 s45";
+    gap: 1px;
+    padding: 2px;
+    justify-content: center;
+    background-color: #fff9e6;
+    border-radius: 8px;
+  }
+
+  .seat {
+    width: 64px;
+    height: 64px;
+  }
+
+  .seat-image {
+    transform: rotate(90deg); /* face up */
+  }
+
+  .seat-number {
+    font-size: 1.1rem;
+  }
+
+  .card-footer button {
+    width: 100% !important;
+    height: 45px !important;
+    font-size: 1rem !important;
+  }
+}
+
+/* Tiny screens */
+@media (max-width: 480px) {
+  .seat-map-grid {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1px;
+  }
+
+  .seat {
+    width: 60px;
+    height: 60px;
+  }
+
+  .seat-number {
+    font-size: 1rem;
+  }
+}

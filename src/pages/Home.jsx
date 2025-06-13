@@ -61,9 +61,24 @@ export default function Home({ navigateTo }) {
     passengers: 1
   });
 
+  const [filteredFrom, setFilteredFrom] = useState([]);
+  const [filteredTo, setFilteredTo] = useState([]);
+
   const [whyUsRef, whyUsVisible] = useFadeInOnScroll();
   const [servicesRef, servicesVisible] = useFadeInOnScroll();
 
+  const offices = [
+    { name: 'MWEMBE TAYARI' }, { name: 'COURIER MOMBASA' },
+    { name: 'BONDENI' }, { name: 'CHANGAMWE' }, { name: 'MARIAKANI' }, { name: 'NYALI' },
+    { name: 'BAMBURI' }, { name: 'UTANGE/MAJAONI' }, { name: 'MTWAPA' }, { name: 'KILIFI' },
+    { name: 'TIMBONI' }, { name: 'MALINDI' }, { name: 'VOI' }, { name: 'MACHAKOS JUNCTION' },
+    { name: 'MLOLONGO' }, { name: 'NAIROBI TOWN' }, { name: 'SOUTH C' },
+    { name: 'EASTLEIGH' }, { name: 'INDUSTRIAL AREA' }, { name: 'PRESTIGE' }, { name: 'THIKA' },
+    { name: 'MAKONGENI' }, { name: 'NAKURU' }, { name: 'GILGIL' }, { name: 'KISUMU' },
+    { name: 'BUSIA' }, { name: 'ELDORET' }, { name: 'MALABA' }, { name: 'KAMPALA' },
+    { name: 'MINJILA' }, { name: 'KIBAONI' }, { name: 'MPEKETONI' }, { name: 'WITU' },
+    { name: 'HINDI' }, { name: 'MOKOWE' }, { name: 'LAMU' }
+  ];
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -75,6 +90,20 @@ export default function Home({ navigateTo }) {
     });
   };
 
+  const handleInputChange = (type, value) => {
+    const filtered = offices.filter(office =>
+      office.name.toLowerCase().includes(value.toLowerCase())
+    );
+
+    if (type === 'from') {
+      setSearchParams({ ...searchParams, from: value });
+      setFilteredFrom(filtered);
+    } else {
+      setSearchParams({ ...searchParams, to: value });
+      setFilteredTo(filtered);
+    }
+  };
+
   const [routeIndex, setRouteIndex] = useState(0); // Store the index
   const [promoIndex, setPromoIndex] = useState(0);
   const [isFading, setIsFading] = useState(true); // control opacity
@@ -83,6 +112,11 @@ const [prevIndex, setPrevIndex] = useState(null);
 
 const promoImages = [redPromo, blackPromo, yellowPromoBg];
 const routeImages = [ORoutes, BuscarTicket];
+
+useEffect(() => {
+    setFilteredFrom(offices);
+    setFilteredTo(offices);
+  }, []);
 
 useEffect(() => {
   const interval = setInterval(() => {
@@ -110,47 +144,6 @@ function getTomorrowDate() {
 // Inside your component:
 const dateInputRef = useRef(null);
 
-  const offices = [
-    { name: 'MWEMBE TAYARI OFFICE 1', contact: '0717073333/0731333888' },
-    { name: 'MWEMBE TAYARI OFFICE 2', contact: '0702555005' },
-    { name: 'COURIER MOMBASA OFFICE', contact: '0798222002/010010000' },
-    { name: 'BONDENI OFFICE', contact: '0114500555' },
-    { name: 'CHANGAMWE OFFICE', contact: '0793666006' },
-    { name: 'MARIAKANI OFFICE', contact: '0759000101' },
-    { name: 'NYALI OFFICE', contact: '0752000555' },
-    { name: 'BAMBURI OFFICE', contact: '0790616151' },
-    { name: 'UTANGE/MAJAONI OFFICE', contact: '0112500555' },
-    { name: 'MTWAPA OFFICE', contact: '0792100100' },
-    { name: 'KILIFI OFFICE', contact: '0717072020' },
-    { name: 'TIMBONI OFFICE', contact: '0711505500' },
-    { name: 'MALINDI OFFICE', contact: '0711500888/0791202020' },
-    { name: 'VOI OFFICE', contact: '0799999011' },
-    { name: 'MACHAKOS JUNCTION OFFICE', contact: '0711515115' },
-    { name: 'MLOLONGO OFFICE', contact: '0113555005' },
-    { name: 'NAIROBI OFFICE TOWN', contact: '0718127350' },
-    { name: 'NAIROBI OFFICE PARCEL', contact: '0790505050' },
-    { name: 'SOUTH C OFFICE', contact: '0711502626' },
-    { name: 'EASTLEIGH OFFICE', contact: '0790606060' },
-    { name: 'INDUSTRIAL AREA OFFICE', contact: 'N/A' }, // Added N/A for missing number
-    { name: 'PRESTIGE OFFICE', contact: '0741555005' },
-    { name: 'THIKA OFFICE', contact: '0750010101' },
-    { name: 'MAKONGENI OFFICE', contact: '0703305555' },
-    { name: 'NAKURU OFFICE', contact: '0717027770' },
-    { name: 'GILGIL OFFICE', contact: '0741555666' },
-    { name: 'KISUMU OFFICE', contact: '0722584333' },
-    { name: 'BUSIA OFFICE', contact: '0104972075' },
-    { name: 'ELDORET OFFICE', contact: '0717078855' },
-    { name: 'MALABA OFFICE', contact: '0758001110' },
-    { name: 'KAMPALA OFFICE', contact: 'N/A' }, // Added N/A for missing number
-    { name: 'MINJILA OFFICE', contact: '0743110001' },
-    { name: 'KIBAONI OFFICE', contact: '0790110001' },
-    { name: 'MPEKETONI OFFICE', contact: '0737666333' },
-    { name: 'WITU OFFICE', contact: '0795220002' },
-    { name: 'HINDI OFFICE', contact: '0114110001' },
-    { name: 'MOKOWE OFFICE', contact: '0740220002' },
-    { name: 'LAMU OFFICE', contact: '0716500555' }
-  ];
-
   return (
     <div className="position-relative">
       {/* Hero Image */}
@@ -162,6 +155,7 @@ const dateInputRef = useRef(null);
           <div className="bg-white rounded shadow-lg p-4 max-w-lg mx-auto">
             <form onSubmit={handleSearch}>
               <div className="row g-3">
+
                 {/* FROM */}
                 <div className="col-md-3">
                   <label htmlFor="from" className="form-label text-secondary mb-1">From</label>
@@ -169,20 +163,19 @@ const dateInputRef = useRef(null);
                     <span className="input-group-text">
                       <i className="bi bi-geo-alt-fill"></i>
                     </span>
-                    <select
-                      id="from"
-                      className="form-select"
+                    <input
+                      list="from-options"
+                      className="form-control"
                       value={searchParams.from}
-                      onChange={(e) => setSearchParams({ ...searchParams, from: e.target.value })}
+                      onChange={(e) => handleInputChange('from', e.target.value)}
+                      placeholder="Type origin"
                       required
-                    >
-                      <option value="">Select Origin</option>
-                      {offices.map((office, index) => (
-                        <option key={index} value={office.name}>
-                          {office.name}
-                        </option>
+                    />
+                    <datalist id="from-options">
+                      {filteredFrom.map((office, index) => (
+                        <option key={index} value={office.name} />
                       ))}
-                    </select>
+                    </datalist>
                   </div>
                 </div>
 
@@ -193,20 +186,19 @@ const dateInputRef = useRef(null);
                     <span className="input-group-text">
                       <i className="bi bi-geo-alt"></i>
                     </span>
-                    <select
-                      id="to"
-                      className="form-select"
+                    <input
+                      list="to-options"
+                      className="form-control"
                       value={searchParams.to}
-                      onChange={(e) => setSearchParams({ ...searchParams, to: e.target.value })}
+                      onChange={(e) => handleInputChange('to', e.target.value)}
+                      placeholder="Type destination"
                       required
-                    >
-                      <option value="">Select Destination</option>
-                      {offices.map((office, index) => (
-                        <option key={index} value={office.name}>
-                          {office.name}
-                        </option>
+                    />
+                    <datalist id="to-options">
+                      {filteredTo.map((office, index) => (
+                        <option key={index} value={office.name} />
                       ))}
-                    </select>
+                    </datalist>
                   </div>
                 </div>
 
@@ -217,7 +209,7 @@ const dateInputRef = useRef(null);
                     <span
                       className="input-group-text"
                       role="button"
-                      onClick={() => dateInputRef.current?.showPicker()} // This opens native date picker in modern browsers
+                      onClick={() => dateInputRef.current?.showPicker()} 
                     >
                       <i className="bi bi-calendar-event-fill"></i>
                     </span>

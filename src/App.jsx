@@ -29,7 +29,7 @@ function App() {
         {/* Render content based on currentView and pass searchParams */}
         <ContentRenderer currentView={currentView} searchParams={searchParams} navigateTo={navigateTo} />
       </main>
-      <Footer />
+      <Footer navigateTo={navigateTo}/>
     </div>
     // Removed </Router>
   );

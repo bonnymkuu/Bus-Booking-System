@@ -1,4 +1,4 @@
-export default function Footer() {
+export default function Footer({ navigateTo }) {
   return (
     <footer className="bg-dark text-white py-5"> {/* Bootstrap dark background, text color, padding */}
       <div className="container mx-auto px-4"> {/* Bootstrap container */}
@@ -11,12 +11,34 @@ export default function Footer() {
           <div className="col-md-3">
             <h5 className="fw-bold mb-3">Quick Links</h5>
             <ul className="list-unstyled"> {/* Bootstrap list-unstyled */}
-              <li><a href="#" className="text-light text-decoration-none py-1 d-block">Home</a></li> {/* Bootstrap text color, no underline, padding, display block */}
-              <li><a href="#" className="text-light text-decoration-none py-1 d-block">Routes & Schedules</a></li>
-              <li><a href="#" className="text-light text-decoration-none py-1 d-block">My Bookings</a></li>
-              <li><a href="#" className="text-light text-decoration-none py-1 d-block">Contact Us</a></li>
+              <li>
+                <a href="#" onClick={() => navigateTo('home')} className="text-light text-decoration-none py-1 d-block">
+                  <i className="bi bi-house-door me-2"></i>Home
+                </a>
+              </li>
+              <li>
+                <a href="#" onClick={() => navigateTo('routesList')} className="text-light text-decoration-none py-1 d-block">
+                  <i className="bi bi-bus-front me-2"></i>Routes & Schedules
+                </a>
+              </li>
+              <li>
+                <a href="#" onClick={() => navigateTo('bookings')} className="text-light text-decoration-none py-1 d-block">
+                  <i className="bi bi-journal-check me-2"></i>My Bookings
+                </a>
+              </li>
+              <li>
+                <a href="#" onClick={() => navigateTo('contact')} className="text-light text-decoration-none py-1 d-block">
+                  <i className="bi bi-envelope me-2"></i>Contact Us
+                </a>
+              </li>
+              <li>
+                <a href="#" onClick={() => navigateTo('notFound')} className="text-light text-decoration-none py-1 d-block">
+                  <i className="bi bi-exclamation-circle me-2"></i>Not Found
+                </a>
+              </li>
             </ul>
           </div>
+
           
           <div className="col-md-3">
             <h5 className="fw-bold mb-3">Popular Routes</h5>
