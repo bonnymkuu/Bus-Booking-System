@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import Button from '../components/Button'; // Ensure this path is correct
+import React, { useState, useEffect } from "react";
+import Button from "../components/Button"; // Ensure this path is correct
 
 export default function MpesaPayment({ navigateTo, bookingDetails }) {
   const {
@@ -16,24 +16,23 @@ export default function MpesaPayment({ navigateTo, bookingDetails }) {
     destinationLocation,
   } = bookingDetails || {};
 
-
   const [passengers, setPassengers] = useState([]);
   const [showMessageBox, setShowMessageBox] = useState(false);
-  const [messageText, setMessageBoxText] = useState('');
+  const [messageText, setMessageBoxText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (selectedSeats && selectedSeats.length > 0) {
       setPassengers(
-        selectedSeats.map(seatNumber => ({
+        selectedSeats.map((seatNumber) => ({
           seatNumber: seatNumber,
-          name: '',
-          age: '',
-          code: '',
-          phone: '',
-          gender: '',
-          nationality: '',
-          nationalId: '',
+          name: "",
+          age: "",
+          code: "",
+          phone: "",
+          gender: "",
+          nationality: "",
+          nationalId: "",
         }))
       );
     } else {
@@ -54,71 +53,138 @@ export default function MpesaPayment({ navigateTo, bookingDetails }) {
 
   const closeCustomAlert = () => {
     setShowMessageBox(false);
-    setMessageBoxText('');
+    setMessageBoxText("");
   };
 
   const handleMakePayment = async () => {
-    const allFieldsFilled = passengers.every(p =>
-      p.name && p.age && p.code && p.phone && p.gender && p.nationality && p.nationalId
+    const allFieldsFilled = passengers.every(
+      (p) => p.name && p.age && p.code && p.phone && p.gender && p.nationality
     );
 
     if (!allFieldsFilled) {
-      showCustomAlert('Please fill in all passenger details for all selected seats.');
-      return;
-    }
-
-    const payerPhoneNumber = passengers[0]?.phone;
-    const payerPhoneCode = passengers[0]?.code;
-
-    if (!payerPhoneNumber || !payerPhoneCode) {
-      showCustomAlert('Please provide a phone number for the primary passenger to initiate payment.');
+      showCustomAlert(
+        "Please fill in all passenger details for all selected seats."
+      );
       return;
     }
 
     setIsLoading(true);
-    showCustomAlert('Initiating payment... Please wait.');
+    showCustomAlert("Initiating payment... Please wait.");
 
     try {
-      const fullPhoneNumber = `${payerPhoneCode}${payerPhoneNumber}`;
-      const bookingReference = `BUS-${Date.now()}`;
-
-      const response = await fetch('http://your-backend-url/api/payments', {
-        method: 'POST',
+      const response = await fetch("http://your-backend-url/api/payments", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          phoneNumber: fullPhoneNumber,
+          passengers: passengers.map((p) => ({
+            name: p.name,
+            age: p.age,
+            code: p.code,
+            phone: p.phone,
+            gender: p.gender,
+            nationality: p.nationality,
+            seatNumber: p.seatNumber, // ✅ Include seat number
+            travelDate: new Date().toISOString().slice(0, 10), // ✅ or pass from props if available
+          })),
           amount: totalAmount,
-          bookingReference
         }),
       });
 
       const data = await response.json();
 
       if (data.success) {
-        showCustomAlert(`Payment request sent to ${fullPhoneNumber}. Please enter your M-Pesa PIN on your phone.`);
-        // You can add additional logic here to track payment status
+        showCustomAlert(
+          `Payment request sent. Please enter your M-Pesa PIN on your phone.`
+        );
+        setBookingReference(data.bookingReference);
+
+        // 🔔 Send SMS to each passenger
+        for (const p of passengers) {
+          await sendConfirmationSMS(p.phone, p.name, data.bookingReference);
+        }
+
+        // Optional: poll payment status
+        pollPaymentStatus(data.bookingReference);
       } else {
-        showCustomAlert(data.error || 'Payment initiation failed. Please try again.');
+        showCustomAlert(
+          data.error || "Payment initiation failed. Please try again."
+        );
       }
     } catch (error) {
-      console.error('Payment initiation error:', error);
-      showCustomAlert('An error occurred during payment. Please try again.');
+      console.error("Payment initiation error:", error);
+      showCustomAlert("An error occurred during payment. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
 
+  const sendConfirmationSMS = async (phoneNumber, name, reference) => {
+    const message = `Hi ${name}, your booking request was received. Reference: ${reference}. Thank you!`;
+
+    try {
+      const response = await fetch("https://whatsms.p.rapidapi.com/sms/send", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-RapidAPI-Key": import.meta.env.RAPIDAPI_KEY,
+          "X-RapidAPI-Host": "whatsms.p.rapidapi.com",
+        },
+        body: JSON.stringify({
+          to: phoneNumber,
+          body: message,
+        }),
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        console.log(`SMS sent to ${phoneNumber}`);
+      } else {
+        console.warn(`SMS failed for ${phoneNumber}:`, result.message);
+      }
+    } catch (error) {
+      console.error(`SMS error for ${phoneNumber}:`, error.message);
+    }
+  };
+
+  // Optional: Poll payment status
+  const pollPaymentStatus = async (bookingReference) => {
+    const interval = setInterval(async () => {
+      try {
+        const response = await fetch(
+          `http://your-backend-url/api/payments/status?reference=${bookingReference}`
+        );
+        const data = await response.json();
+
+        if (data.status === "completed") {
+          clearInterval(interval);
+          showCustomAlert("Payment completed successfully!");
+          // Proceed with booking confirmation
+        }
+      } catch (error) {
+        console.error("Error checking payment status:", error);
+      }
+    }, 5000); // Check every 5 seconds
+  };
+
   return (
     <div className="container py-4">
       {showMessageBox && (
-        <div className="modal fade show d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+        <div
+          className="modal fade show d-block"
+          tabIndex="-1"
+          role="dialog"
+          style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+        >
           <div className="modal-dialog modal-dialog-centered" role="document">
             <div className="modal-content">
               <div className="modal-body text-center py-4">
                 {isLoading && (
-                  <div className="spinner-border text-primary mb-3" role="status">
+                  <div
+                    className="spinner-border text-primary mb-3"
+                    role="status"
+                  >
                     <span className="visually-hidden">Loading...</span>
                   </div>
                 )}
@@ -139,7 +205,10 @@ export default function MpesaPayment({ navigateTo, bookingDetails }) {
       )}
 
       <div className="mb-4">
-        <button onClick={() => navigateTo('book', { id: routeId })} className="btn btn-link text-decoration-none p-0 d-flex align-items-center">
+        <button
+          onClick={() => navigateTo("book", { id: routeId })}
+          className="btn btn-link text-decoration-none p-0 d-flex align-items-center"
+        >
           <i className="bi bi-chevron-left me-2"></i>Modify Trip
         </button>
       </div>
@@ -151,10 +220,18 @@ export default function MpesaPayment({ navigateTo, bookingDetails }) {
               <h3 className="card-title h5 mb-4">Passengers</h3>
 
               {passengers.map((passenger, index) => (
-                <div key={passenger.seatNumber} className="mb-4 p-3 rounded-lg border bg-light">
+                <div
+                  key={passenger.seatNumber}
+                  className="mb-4 p-3 rounded-lg border bg-light"
+                >
                   <p className="fw-semibold mb-3">
-                    {index === 0 ? 'Primary Passenger' : `Passenger ${index + 1}`}
-                    <span className="text-muted small"> Seat: {passenger.seatNumber}</span>
+                    {index === 0
+                      ? "Primary Passenger"
+                      : `Passenger ${index + 1}`}
+                    <span className="text-muted small">
+                      {" "}
+                      Seat: {passenger.seatNumber}
+                    </span>
                   </p>
                   <div className="row g-3">
                     <div className="col-sm-6">
@@ -163,7 +240,9 @@ export default function MpesaPayment({ navigateTo, bookingDetails }) {
                         placeholder="Name *"
                         className="form-control"
                         value={passenger.name}
-                        onChange={(e) => handlePassengerChange(index, 'name', e.target.value)}
+                        onChange={(e) =>
+                          handlePassengerChange(index, "name", e.target.value)
+                        }
                       />
                     </div>
                     <div className="col-sm-6">
@@ -172,14 +251,18 @@ export default function MpesaPayment({ navigateTo, bookingDetails }) {
                         placeholder="Age *"
                         className="form-control"
                         value={passenger.age}
-                        onChange={(e) => handlePassengerChange(index, 'age', e.target.value)}
+                        onChange={(e) =>
+                          handlePassengerChange(index, "age", e.target.value)
+                        }
                       />
                     </div>
                     <div className="col-sm-6">
                       <select
                         className="form-select"
                         value={passenger.code}
-                        onChange={(e) => handlePassengerChange(index, 'code', e.target.value)}
+                        onChange={(e) =>
+                          handlePassengerChange(index, "code", e.target.value)
+                        }
                       >
                         <option value="">Code *</option>
                         <option value="+254">+254 (Kenya)</option>
@@ -192,7 +275,9 @@ export default function MpesaPayment({ navigateTo, bookingDetails }) {
                         placeholder="Phone"
                         className="form-control"
                         value={passenger.phone}
-                        onChange={(e) => handlePassengerChange(index, 'phone', e.target.value)}
+                        onChange={(e) =>
+                          handlePassengerChange(index, "phone", e.target.value)
+                        }
                       />
                     </div>
                     <div className="col-12 col-sm-6 d-flex align-items-center">
@@ -203,10 +288,19 @@ export default function MpesaPayment({ navigateTo, bookingDetails }) {
                           name={`gender-${index}`}
                           id={`female-${index}`}
                           value="Female"
-                          checked={passenger.gender === 'Female'}
-                          onChange={(e) => handlePassengerChange(index, 'gender', e.target.value)}
+                          checked={passenger.gender === "Female"}
+                          onChange={(e) =>
+                            handlePassengerChange(
+                              index,
+                              "gender",
+                              e.target.value
+                            )
+                          }
                         />
-                        <label className="form-check-label" htmlFor={`female-${index}`}>
+                        <label
+                          className="form-check-label"
+                          htmlFor={`female-${index}`}
+                        >
                           Female
                         </label>
                       </div>
@@ -217,10 +311,19 @@ export default function MpesaPayment({ navigateTo, bookingDetails }) {
                           name={`gender-${index}`}
                           id={`male-${index}`}
                           value="Male"
-                          checked={passenger.gender === 'Male'}
-                          onChange={(e) => handlePassengerChange(index, 'gender', e.target.value)}
+                          checked={passenger.gender === "Male"}
+                          onChange={(e) =>
+                            handlePassengerChange(
+                              index,
+                              "gender",
+                              e.target.value
+                            )
+                          }
                         />
-                        <label className="form-check-label" htmlFor={`male-${index}`}>
+                        <label
+                          className="form-check-label"
+                          htmlFor={`male-${index}`}
+                        >
                           Male
                         </label>
                       </div>
@@ -231,7 +334,13 @@ export default function MpesaPayment({ navigateTo, bookingDetails }) {
                         placeholder="Nationality *"
                         className="form-control"
                         value={passenger.nationality}
-                        onChange={(e) => handlePassengerChange(index, 'nationality', e.target.value)}
+                        onChange={(e) =>
+                          handlePassengerChange(
+                            index,
+                            "nationality",
+                            e.target.value
+                          )
+                        }
                       />
                     </div>
                     <div className="col-sm-6">
@@ -240,7 +349,13 @@ export default function MpesaPayment({ navigateTo, bookingDetails }) {
                         placeholder="National ID *"
                         className="form-control"
                         value={passenger.nationalId}
-                        onChange={(e) => handlePassengerChange(index, 'nationalId', e.target.value)}
+                        onChange={(e) =>
+                          handlePassengerChange(
+                            index,
+                            "nationalId",
+                            e.target.value
+                          )
+                        }
                       />
                     </div>
                   </div>
@@ -254,37 +369,55 @@ export default function MpesaPayment({ navigateTo, bookingDetails }) {
               <h3 className="card-title h5 mb-4">Outbound Trip</h3>
               <div className="bg-light p-3 rounded d-flex flex-wrap justify-content-center align-items-center text-center text-sm mb-4">
                 {/* Main route origin and destination */}
-                <span className="fw-semibold text-primary mx-1 mb-2 mb-sm-0">{originLocation || 'N/A'} to {destinationLocation || 'N/A'}</span>
+                <span className="fw-semibold text-primary mx-1 mb-2 mb-sm-0">
+                  {originLocation || "N/A"} to {destinationLocation || "N/A"}
+                </span>
                 {/* Conditionally display boarding/dropping if selected */}
                 {boardingPoint && droppingPoint && (
-                    <span className="fw-semibold text-success mx-1 mb-2 mb-sm-0">{boardingPoint} to {droppingPoint}</span>
+                  <span className="fw-semibold text-success mx-1 mb-2 mb-sm-0">
+                    {boardingPoint} to {droppingPoint}
+                  </span>
                 )}
-                <span className="mx-1">Seat(s): {selectedSeats.join(', ')}</span>
+                <span className="mx-1">
+                  Seat(s): {selectedSeats.join(", ")}
+                </span>
               </div>
               <div className="d-flex flex-column flex-sm-row align-items-center align-items-sm-start gap-3">
                 <div className="flex-shrink-0 text-center mb-3 mb-sm-0">
                   <i className="bi bi-bus-front-fill fs-2 text-muted"></i>
                   <p className="small text-muted mb-0">{company}</p>
-                  <p className="small text-muted">{originLocation || 'N/A'}-{destinationLocation || 'N/A'}</p>
+                  <p className="small text-muted">
+                    {originLocation || "N/A"}-{destinationLocation || "N/A"}
+                  </p>
                 </div>
                 <div className="flex-grow-1 row g-2 text-sm text-center text-sm-start">
                   <div className="col-12 col-sm-4">
                     <p className="fw-semibold mb-1">Depart</p>
-                    <p className="mb-0">{boardingPoint || originLocation || 'N/A'}</p>
+                    <p className="mb-0">
+                      {boardingPoint || originLocation || "N/A"}
+                    </p>
                     <p className="text-muted small mb-0">{departureTime}</p>
                     <p className="text-muted small mb-0">Boarding</p>
-                    <p className="text-muted small">{boardingPoint || originLocation || 'N/A'}</p>
+                    <p className="text-muted small">
+                      {boardingPoint || originLocation || "N/A"}
+                    </p>
                   </div>
                   <div className="col-12 col-sm-4">
                     <p className="fw-semibold mb-1">Arrive</p>
-                    <p className="mb-0">{droppingPoint || destinationLocation || 'N/A'}</p>
+                    <p className="mb-0">
+                      {droppingPoint || destinationLocation || "N/A"}
+                    </p>
                     <p className="text-muted small mb-0">{arrivalTime}</p>
                     <p className="text-muted small mb-0">Dropping</p>
-                    <p className="text-muted small">{droppingPoint || destinationLocation || 'N/A'}</p>
+                    <p className="text-muted small">
+                      {droppingPoint || destinationLocation || "N/A"}
+                    </p>
                   </div>
                   <div className="col-12 col-sm-4 text-center text-sm-end">
                     <p className="fw-semibold mb-1">Total:</p>
-                    <p className="fs-5 fw-bold">{totalAmount.toLocaleString()}</p>
+                    <p className="fs-5 fw-bold">
+                      {totalAmount.toLocaleString()}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -305,17 +438,18 @@ export default function MpesaPayment({ navigateTo, bookingDetails }) {
                 <span>Total(inc.VAT)</span>
                 <span>KSH {totalAmount.toLocaleString()}.00</span>
               </div>
-              <Button
-                onClick={handleMakePayment}
-                disabled={isLoading}
-              >
+              <Button onClick={handleMakePayment} disabled={isLoading}>
                 {isLoading ? (
                   <>
-                    <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    <span
+                      className="spinner-border spinner-border-sm me-2"
+                      role="status"
+                      aria-hidden="true"
+                    ></span>
                     Initiating...
                   </>
                 ) : (
-                  'Make Payment'
+                  "Make Payment"
                 )}
               </Button>
             </div>
