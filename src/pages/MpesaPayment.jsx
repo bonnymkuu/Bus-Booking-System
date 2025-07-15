@@ -79,18 +79,29 @@ export default function MpesaPayment({ navigateTo, bookingDetails }) {
     showCustomAlert('Initiating payment... Please wait.');
 
     try {
-      console.log(`Simulating payment for ${totalAmount} KES to ${payerPhoneCode}${payerPhoneNumber}`);
+      const fullPhoneNumber = `${payerPhoneCode}${payerPhoneNumber}`;
+      const bookingReference = `BUS-${Date.now()}`;
 
-      const response = await new Promise(resolve => setTimeout(() => {
-        resolve({ success: true, message: `USSD push sent to ${payerPhoneCode}${payerPhoneNumber}. Please enter your Mpesa PIN on your phone.` });
-      }, 3000));
+      const response = await fetch('http://your-backend-url/api/payments', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          phoneNumber: fullPhoneNumber,
+          amount: totalAmount,
+          bookingReference
+        }),
+      });
 
-      if (response.success) {
-        showCustomAlert(response.message);
+      const data = await response.json();
+
+      if (data.success) {
+        showCustomAlert(`Payment request sent to ${fullPhoneNumber}. Please enter your M-Pesa PIN on your phone.`);
+        // You can add additional logic here to track payment status
       } else {
-        showCustomAlert(response.message);
+        showCustomAlert(data.error || 'Payment initiation failed. Please try again.');
       }
-
     } catch (error) {
       console.error('Payment initiation error:', error);
       showCustomAlert('An error occurred during payment. Please try again.');

@@ -3,7 +3,7 @@ import { useState } from 'react'; // Import useState
 // Removed BrowserRouter as Router
 import Header from './components/Header';
 import Footer from './components/Footer';
-import './App.css';
+import './styles/App.css';
 import ContentRenderer from './ContentRenderer'; // Renamed and modified from AppRoutes
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
