@@ -82,10 +82,10 @@ export default function Login({ navigateTo }) {
               <label className="form-check-label" htmlFor="remember-me">Remember me</label>
             </div>
             {/* Kept href="#" as no specific forgotPassword view was requested */}
-            <a href="#" className="text-danger text-decoration-none">Forgot password?</a>
+            <a href="#" className="text-primary text-decoration-none">Forgot password?</a>
           </div>
 
-          <button type="submit" className="btn btn-danger w-100">
+          <button type="submit" className="btn btn-primary w-100">
             Sign in
           </button>
         </form>

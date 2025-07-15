@@ -158,7 +158,7 @@ export default function Register({ navigateTo }) {
           </div>
 
           {/* Submit */}
-          <button type="submit" className="btn btn-danger w-100">
+          <button type="submit" className="btn btn-primary w-100">
             Register
           </button>
         </form>
@@ -181,7 +181,7 @@ export default function Register({ navigateTo }) {
         {/* Login link */}
         <p className="text-center mt-3">
           Already have an account?{' '}
-          <a href="#" onClick={() => navigateTo('login')} className="text-danger">
+          <a href="#" onClick={() => navigateTo('login')} className="text-primary">
             Login
           </a>
         </p>

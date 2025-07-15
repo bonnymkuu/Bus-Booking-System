@@ -23,7 +23,7 @@ export default function PrintTicket() {
 
     const doc = new jsPDF();
     doc.setFontSize(18);
-    doc.text('Bus company Ticket Details', 20, 20);
+    doc.text('SafiriExpress Ticket Details', 20, 20);
 
     doc.setFontSize(14);
     doc.text(`Ticket No: ${ticketDetails.ticketNo}`, 20, 40);

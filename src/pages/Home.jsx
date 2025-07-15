@@ -139,20 +139,54 @@ export default function Home({ navigateTo }) {
 
   return (
     <div className="position-relative">
-      {/* Hero Image */}
-      <div className="position-relative hero-bg-image d-flex align-items-center">
-        <div className="position-absolute inset-0 opacity-75 w-100 "></div>
-        <div className="container position-relative z-1">
-          {/* Search Form */}
-          <div className="bg-white rounded shadow-lg p-4 max-w-lg mx-auto">
+      {/* Hero Section with Background Image */}
+      <div
+        className="position-relative hero-bg-image d-flex align-items-center"
+        style={{
+          backgroundImage: `url(${busImage3})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          height: "600px",
+        }}
+      >
+        {/* Dark overlay */}
+        <div
+          className="position-absolute top-0 start-0 w-100 h-100"
+          style={{
+            backgroundColor: "rgba(0, 0, 0, 0.4)",
+          }}
+        ></div>
+
+        {/* Content over background */}
+        <div className="container position-relative z-1 text-center text-white">
+          {/* Title */}
+          <h1 className="fw-bold display-5 mb-3">
+            Explore Routes. Book Easily.
+          </h1>
+
+          {/* Description */}
+          <p
+            className="lead mb-4"
+            style={{ maxWidth: "600px", margin: "0 auto" }}
+          >
+            Discover and book your journey between cities with our easy-to-use
+            search. Enter your origin, destination, and travel date to get
+            started.
+          </p>
+
+          {/* Search Form Card */}
+          <div
+            className="rounded shadow-lg p-4 mt-4 mx-auto"
+            style={{
+              backgroundColor: "rgba(255, 255, 255, 0.4)",
+              maxWidth: "850px",
+            }}
+          >
             <form onSubmit={handleSearch}>
               <div className="row g-3">
                 {/* FROM */}
                 <div className="col-md-3">
-                  <label
-                    htmlFor="from"
-                    className="form-label text-secondary mb-1"
-                  >
+                  <label htmlFor="from" className="form-label text-black mb-1">
                     From
                   </label>
                   <div className="input-group">
@@ -179,10 +213,7 @@ export default function Home({ navigateTo }) {
 
                 {/* TO */}
                 <div className="col-md-3">
-                  <label
-                    htmlFor="to"
-                    className="form-label text-secondary mb-1"
-                  >
+                  <label htmlFor="to" className="form-label text-black mb-1">
                     To
                   </label>
                   <div className="input-group">
@@ -207,10 +238,7 @@ export default function Home({ navigateTo }) {
 
                 {/* DATE */}
                 <div className="col-md-3">
-                  <label
-                    htmlFor="date"
-                    className="form-label text-secondary mb-1"
-                  >
+                  <label htmlFor="date" className="form-label text-black mb-1">
                     Date
                   </label>
                   <div className="input-group">
@@ -255,61 +283,63 @@ export default function Home({ navigateTo }) {
         </div>
       </div>
 
-      <div
-        className="mt-5 mb-5"
-        style={{ width: "100%", height: "600px", overflow: "hidden" }}
-      >
-        <img
-          src={busImage3}
-          alt="Bus route"
+      {/* Features Section - Redesigned */}
+      <div className="container my-5">
+        <div
+          className="text-white p-4 rounded-4 shadow-lg mx-auto"
           style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            display: "block",
+            maxWidth: "900px",
+            background:
+              "linear-gradient(135deg,rgb(5, 98, 114) 0%,rgb(0, 77, 155) 100%)",
+            border: "none",
           }}
-        />
-      </div>
-
-      <div
-        className="bg-primary text-white py-3 my-5 rounded-pill shadow-lg mx-auto d-flex justify-content-around align-items-center"
-        style={{ maxWidth: "900px" }}
-      >
-        <div className="text-center">
-          <img
-            src={vip}
-            alt="VIP Icon"
-            className="d-block mx-auto mb-1"
-            style={{ width: "60px", height: "60px" }}
-          />
-          <small>VIP Treatment</small>
-        </div>
-        <div className="text-center">
-          <img
-            src={wifi}
-            alt="WiFi Icon"
-            className="d-block mx-auto mb-1"
-            style={{ width: "60px", height: "60px" }}
-          />
-          <small>On Board Wifi Available</small>
-        </div>
-        <div className="text-center">
-          <img
-            src={power}
-            alt="Power Icon"
-            className="d-block mx-auto mb-1"
-            style={{ width: "60px", height: "60px" }}
-          />
-          <small>Power Outlets</small>
-        </div>
-        <div className="text-center">
-          <img
-            src={seat}
-            alt="Legroom Icon"
-            className="d-block mx-auto mb-1"
-            style={{ width: "60px", height: "60px" }}
-          />
-          <small>Extra Legroom</small>
+        >
+          <div className="row g-4 text-center">
+            <div className="col-6 col-md-3">
+              <div className="p-3 bg-white bg-opacity-10 rounded-3 h-100">
+                <img
+                  src={vip}
+                  alt="VIP"
+                  className="img-fluid mb-2"
+                  style={{ height: "50px" }}
+                />
+                <h6 className="mb-0">Premium Comfort</h6>
+              </div>
+            </div>
+            <div className="col-6 col-md-3">
+              <div className="p-3 bg-white bg-opacity-10 rounded-3 h-100">
+                <img
+                  src={wifi}
+                  alt="WiFi"
+                  className="img-fluid mb-2"
+                  style={{ height: "50px" }}
+                />
+                <h6 className="mb-0">Free WiFi</h6>
+              </div>
+            </div>
+            <div className="col-6 col-md-3">
+              <div className="p-3 bg-white bg-opacity-10 rounded-3 h-100">
+                <img
+                  src={power}
+                  alt="Power"
+                  className="img-fluid mb-2"
+                  style={{ height: "50px" }}
+                />
+                <h6 className="mb-0">Charging Ports</h6>
+              </div>
+            </div>
+            <div className="col-6 col-md-3">
+              <div className="p-3 bg-white bg-opacity-10 rounded-3 h-100">
+                <img
+                  src={seat}
+                  alt="Seat"
+                  className="img-fluid mb-2"
+                  style={{ height: "50px" }}
+                />
+                <h6 className="mb-0">Spacious Seats</h6>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 

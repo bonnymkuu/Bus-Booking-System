@@ -52,7 +52,7 @@ export default function Gallery() {
 
   return (
     <div className="container-fluid py-5 bg-black">
-      <h2 className="text-center display-4 fw-bold mb-5 text-primary">Our Fleet Gallery</h2>
+      <h2 className="text-center display-4 fw-bold mb-5 text-primary">Gallery</h2>
       <div className="row row-cols-1 row-cols-md-3 g-4">
         {busImages.map((image, index) => {
           const [ref, isVisible] = useFadeInOnScroll();

@@ -4,7 +4,7 @@ export default function Footer({ navigateTo }) {
       <div className="container mx-auto px-4"> {/* Bootstrap container */}
         <div className="row g-4"> {/* Bootstrap grid system with gutters */}
           <div className="col-md-3"> {/* Bootstrap column */}
-            <h4 className="h5 fw-bold mb-3">Bus Booking System</h4> {/* Bootstrap heading, font-weight, margin-bottom */}
+            <h4 className="h5 fw-bold mb-3">SafiriExpress</h4> {/* Bootstrap heading, font-weight, margin-bottom */}
             <p className="text-light">Your trusted partner for bus travel across Kenya. Book tickets easily and travel comfortably.</p> {/* Bootstrap text color */}
           </div>
           
@@ -59,7 +59,7 @@ export default function Footer({ navigateTo }) {
             <h5 className="fw-bold mb-3">Contact Us</h5>
             <address className="text-light not-italic"> {/* Bootstrap text color, not-italic */}
               <p>Nairobi, Kenya</p>
-              <p className="my-2">Email: info@example.com</p>
+              <p className="my-2">Email: info@safiriExpress.com</p>
               <p>Phone: +254 700 123456</p>
             </address>
             
@@ -84,7 +84,7 @@ export default function Footer({ navigateTo }) {
         </div>
         
         <div className="border-top border-secondary mt-5 pt-4 text-center text-light"> {/* Bootstrap border, margin-top, padding-top, text color */}
-          <p>&copy; {new Date().getFullYear()} All rights reserved.</p> <p> developer bonny +254759993892</p>
+          <p>&copy; {new Date().getFullYear()} SafiriExpress. All rights reserved.</p> <p> developer bonny +254759993892</p>
         </div>
       </div>
     </footer>
