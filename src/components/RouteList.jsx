@@ -152,7 +152,7 @@ export default function RoutesList({ initialSearchParams = {}, navigateTo }) {
             </div>
 
             <div className="col-md-3 d-flex align-items-end">
-              <button type="submit" className="btn btn-danger w-100">
+              <button type="submit" className="btn btn-primary w-100">
                 <i className="bi bi-search me-2" />
                 Search
               </button>
@@ -162,7 +162,7 @@ export default function RoutesList({ initialSearchParams = {}, navigateTo }) {
       </div>
 
       <div className="mb-4 text-center">
-        <h2 className="fw-bold" style={{ color: 'maroon' }}>Outbound Trip</h2>
+        <h2 className="fw-bold text-primary"> Outbound Trip</h2>
         <p className="text-muted">
           {searchParams.from || 'N/A'} to {searchParams.to || 'N/A'} —{" "}
           {new Date(searchParams.date).toLocaleDateString('en-US', {

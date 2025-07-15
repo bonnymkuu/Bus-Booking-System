@@ -171,7 +171,7 @@ export default function Book({ navigateTo, currentSearchParams }) {
           <div className="col-md-8"> {/* Left side for seat map and legend */}
             <div className="d-flex justify-content-between align-items-center mb-3">
               <h5 className="mb-0 text-muted">Customise Your Journey</h5>
-              <i className="bi bi-x-circle-fill text-danger fs-4 cursor-pointer"></i> {/* Close icon */}
+              <i className="bi bi-x-circle-fill text-primary fs-4 cursor-pointer"></i> {/* Close icon */}
             </div>
 
             {/* Fare Legend (Top Left) */}
@@ -242,7 +242,7 @@ export default function Book({ navigateTo, currentSearchParams }) {
 
           <div className="col-md-4"> {/* Right side for Boarding & Dropping */}
             <div className="card border-0 shadow-sm">
-                <div className="card-header bg-danger text-white py-2">
+                <div className="card-header bg-primary text-white py-2">
                     <h5 className="mb-0 card-title h6"><i className="bi bi-geo-alt-fill me-2"></i>Boarding & Dropping</h5>
                 </div>
                 <div className="card-body">
@@ -272,7 +272,7 @@ export default function Book({ navigateTo, currentSearchParams }) {
                                 <span className="fs-5">{selectedSeatNumbersDisplay}</span>
                             </div>
                             <div>
-                                <span className="text-danger fw-bold">FARE: {totalFare.toLocaleString()}.00</span>
+                                <span className="text-primary fw-bold">FARE: {totalFare.toLocaleString()}.00</span>
                             </div>
                         </div>
                     </div>

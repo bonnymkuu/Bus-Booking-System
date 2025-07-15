@@ -11,7 +11,7 @@ import React from 'react';
 export default function Button({ onClick, children, iconClass }) {
   // Define hover styles outside the render for better performance and readability
   const buttonStyle = {
-    backgroundImage: 'linear-gradient(145deg,rgb(247, 16, 16) 0%,rgb(59, 4, 4) 100%)', // Slightly brighter gradient
+    backgroundImage: 'linear-gradient(145deg,rgb(16, 193, 247) 0%,rgb(4, 26, 59) 100%)', // Slightly brighter gradient
     color: 'white', // White text for contrast
     border: 'none', // Remove default border
     transition: 'all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)', // Smoother transition
@@ -32,7 +32,7 @@ export default function Button({ onClick, children, iconClass }) {
                 'inset 0 -1px 0px rgba(0, 0, 0, 0.4), ' +
                 '0 6px 10px rgba(0, 0, 0, 0.4), ' + // Increased lift shadow
                 '0 2px 4px rgba(0, 0, 0, 0.3)',
-    backgroundImage: 'linear-gradient(145deg,rgb(160, 117, 0) 0%, #400000 50%, #101010 100%)', // Slightly brighter gradient
+    backgroundImage: 'linear-gradient(145deg,rgb(0, 141, 160) 0%,rgb(0, 33, 64) 50%,rgb(16, 16, 16) 100%)', // Slightly brighter gradient
   };
 
   const handleMouseOver = (e) => {

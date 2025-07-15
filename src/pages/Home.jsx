@@ -1,24 +1,17 @@
 import { useState, useEffect, useRef } from 'react'; 
-import ORoutes from '../assets/images/our_routes.png';
-import BuscarTicket from '../assets/images/buscar_ticket_booking.png';
 import seat from '../assets/images/seat.png';
 import power from '../assets/images/power.png';
 import vip from '../assets/images/vip.png';
 import wifi from '../assets/images/wifi.png';
 import earn from '../assets/images/earn.png';
+import busImage3 from '../assets/images/bus4.jpg';
 import save from '../assets/images/save.png';
 import multiple from '../assets/images/multiple.png';
 import parcel from '../assets/images/parcel.png';
 import fleet from '../assets/images/fleet.png';
 import busRoutes from '../assets/images/bus_route.png';
-import bookingApp from '../assets/images/booking_app.png';
-import yellowPromoBg from '../assets/images/yellow_promo.png';
-import redPromo from '../assets/images/redPromo.png';
-import blackPromo from '../assets/images/blackPromo.png';
 import googlePlayBadge from '../assets/images/google_play_badge.png';
 import appStoreBadge from '../assets/images/app_store_badge.png';
-import bossLogo from '../assets/images/boss_logo.png';
-import volticsLogo from '../assets/images/voltics_logo.svg';
 
 const useFadeInOnScroll = (threshold = 0.1) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -104,36 +97,10 @@ export default function Home({ navigateTo }) {
     }
   };
 
-  const [routeIndex, setRouteIndex] = useState(0); // Store the index
-  const [promoIndex, setPromoIndex] = useState(0);
-  const [isFading, setIsFading] = useState(true); // control opacity
-
-const [prevIndex, setPrevIndex] = useState(null);
-
-const promoImages = [redPromo, blackPromo, yellowPromoBg];
-const routeImages = [ORoutes, BuscarTicket];
-
 useEffect(() => {
     setFilteredFrom(offices);
     setFilteredTo(offices);
   }, []);
-
-useEffect(() => {
-  const interval = setInterval(() => {
-    setPrevIndex(routeIndex); // Store current before changing
-    setRouteIndex((prev) => (prev + 1) % routeImages.length);
-  }, 3000);
-
-  return () => clearInterval(interval);
-}, [routeIndex]);
-
-useEffect(() => {
-  const interval = setInterval(() => {
-    setPromoIndex((prevIndex) => (prevIndex + 1) % promoImages.length);
-  }, 2000);
-
-  return () => clearInterval(interval);
-}, []);
 
 function getTomorrowDate() {
   const tomorrow = new Date();
@@ -229,7 +196,7 @@ const dateInputRef = useRef(null);
 
                 {/* BUTTON */}
                 <div className="col-md-3 d-flex align-items-end">
-                  <button type="submit" className="btn btn-danger w-100 d-flex align-items-center justify-content-center gap-1">
+                  <button type="submit" className="btn btn-primary w-100 d-flex align-items-center justify-content-center gap-1">
                     <i className="bi bi-search"></i>
                     Search
                   </button>
@@ -241,21 +208,20 @@ const dateInputRef = useRef(null);
         </div>
       </div>
 
-      {/* Our Routes Image Section */}
-      <div className="mt-5 mb-5 route-image-wrapper">
-        {routeImages.map((imgSrc, index) => (
-          <img
-            key={index}
-            src={imgSrc}
-            alt={`Route ${index}`}
-            className={`route-image ${index === routeIndex ? 'active' : ''}`}
-          />
-        ))}
+      <div className="mt-5 mb-5" style={{ width: '100%', height: '600px', overflow: 'hidden' }}>
+        <img
+          src={busImage3}
+          alt="Bus route"
+          style={{ 
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            display: 'block'
+          }}
+        />
       </div>
 
-
-      {/* Red Feature Bar (from screenshot) */}
-      <div className="bg-danger text-white py-3 my-5 rounded-pill shadow-lg mx-auto d-flex justify-content-around align-items-center" style={{ maxWidth: '900px' }}>
+      <div className="bg-primary text-white py-3 my-5 rounded-pill shadow-lg mx-auto d-flex justify-content-around align-items-center" style={{ maxWidth: '900px' }}>
         <div className="text-center">
           <img src={vip} alt="VIP Icon" className="d-block mx-auto mb-1" style={{ width: '60px', height: '60px' }} />
           <small>VIP Treatment</small>
@@ -271,44 +237,6 @@ const dateInputRef = useRef(null);
         <div className="text-center">
           <img src={seat} alt="Legroom Icon" className="d-block mx-auto mb-1" style={{ width: '60px', height: '60px' }} />
           <small>Extra Legroom</small>
-        </div>
-      </div>
-
-      {/* Yellow Promo Section (from screenshot) */}
-      <div className="container-fluid py-5 my-5 d-flex flex-lg-row align-items-stretch responsive-section">
-        <div
-          className="d-flex align-items-center justify-content-center booking-block"
-          style={{
-            flex: '1 1 50%',
-            height: '350px',
-            backgroundColor: '#f8f9fa',
-            borderRadius: '15px 0 0 15px',
-          }}
-        >
-          <img
-            src={bookingApp}
-            alt="Booking App"
-            className="img-fluid"
-            style={{
-              maxHeight: '100%',
-              objectFit: 'contain',
-            }}
-          />
-        </div>
-
-        <div
-          className="promo-block"
-          style={{
-            flex: '1 1 50%',
-            height: '350px',
-            backgroundImage: `url(${promoImages[promoIndex]})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            borderRadius: '0 15px 15px 0',
-            transition: 'background-image 1s ease-in-out',
-            color: 'white',
-          }}
-        >
         </div>
       </div>
 
@@ -383,10 +311,6 @@ const dateInputRef = useRef(null);
           <a href="#" target="_blank" rel="noopener noreferrer">
             <img src={appStoreBadge} alt="Download on the App Store" style={{ height: '60px' }} />
           </a>
-        </div>
-        <div className="d-flex justify-content-center align-items-center gap-4 flex-wrap">
-          <img src={bossLogo} alt="BOSS Logo" style={{ height: '50px' }} />
-          <img src={volticsLogo} alt="VOLTICS Logo" style={{ height: '50px' }} />
         </div>
       </div>
     </div>

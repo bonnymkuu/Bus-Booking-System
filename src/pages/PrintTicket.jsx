@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Ticket from '../assets/images/ticket.png';
-import Background from '../assets/images/interior.png';
+import Background from '../assets/images/busint.jpg';
 import { jsPDF } from 'jspdf';
 
 export default function PrintTicket() {
@@ -23,7 +23,7 @@ export default function PrintTicket() {
 
     const doc = new jsPDF();
     doc.setFontSize(18);
-    doc.text('Buscar Ticket Details', 20, 20);
+    doc.text('Bus company Ticket Details', 20, 20);
 
     doc.setFontSize(14);
     doc.text(`Ticket No: ${ticketDetails.ticketNo}`, 20, 40);
