@@ -4,7 +4,7 @@ import power from "../assets/images/power.png";
 import vip from "../assets/images/vip.png";
 import wifi from "../assets/images/wifi.png";
 import earn from "../assets/images/earn.png";
-import busImage3 from "../assets/images/bus4.jpg";
+import busImage3 from "../assets/images/bus7.jpg";
 import save from "../assets/images/save.png";
 import multiple from "../assets/images/multiple.png";
 import parcel from "../assets/images/parcel.png";
@@ -146,7 +146,7 @@ export default function Home({ navigateTo }) {
           backgroundImage: `url(${busImage3})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          height: "600px",
+          height: "800px",
         }}
       >
         {/* Dark overlay */}

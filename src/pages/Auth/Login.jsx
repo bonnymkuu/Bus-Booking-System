@@ -34,7 +34,7 @@ export default function Login({ navigateTo }) {
       <div className="card shadow-lg p-4" style={{ maxWidth: '400px', width: '100%' }}>
         <h2 className="text-center mb-3">Sign in to your account</h2>
         <p className="text-center text-muted mb-4">
-          Or <a href="#" onClick={() => navigateTo('register')} className="text-danger">create a new account</a>
+          Or <a href="#" onClick={() => navigateTo('register')} className="text-primary">create a new account</a>
         </p>
 
         {error && (
