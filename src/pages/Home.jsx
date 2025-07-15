@@ -160,7 +160,7 @@ export default function Home({ navigateTo }) {
         {/* Content over background */}
         <div className="container position-relative z-1 text-center text-white">
           {/* Title */}
-          <h1 className="fw-bold display-5 mb-3">
+          <h1 className="fw-bold display-5 mt-5 mb-3">
             Explore Routes. Book Easily.
           </h1>
 
