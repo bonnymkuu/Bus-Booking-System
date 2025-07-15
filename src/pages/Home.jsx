@@ -3,7 +3,7 @@ import seat from "../assets/images/seat.png";
 import power from "../assets/images/power.png";
 import vip from "../assets/images/vip.png";
 import wifi from "../assets/images/wifi.png";
-import earn from "../assets/images/earn.png";
+import mobileBackgroundImage from "../assets/images/busmobile.jpg";
 import busImage3 from "../assets/images/bus7.jpg";
 import save from "../assets/images/save.png";
 import multiple from "../assets/images/multiple.png";
@@ -149,6 +149,15 @@ export default function Home({ navigateTo }) {
           height: "800px",
         }}
       >
+        <style jsx>{`
+          @media (max-width: 768px) {
+            .hero-bg-image {
+              background-image: url(${mobileBackgroundImage}) !important;
+              height: 800px !important; /* Adjust height for mobile if needed */
+            }
+          }
+        `}</style>
+
         {/* Dark overlay */}
         <div
           className="position-absolute top-0 start-0 w-100 h-100"
@@ -160,8 +169,8 @@ export default function Home({ navigateTo }) {
         {/* Content over background */}
         <div className="container position-relative z-1 text-center text-white">
           {/* Title */}
-          <h1 className="fw-bold display-5 mt-5 mb-3">
-            Explore Routes. Book Easily.
+          <h1 className="fw-bold display-5 mt-5 mb-5">
+            Explore with Safiri Express
           </h1>
 
           {/* Description */}
