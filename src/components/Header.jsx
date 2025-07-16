@@ -14,7 +14,7 @@ export default function Header({ navigateTo }) {
     { name: 'Home', icon: 'bi-house', view: 'home' },
     { name: 'About Us', icon: 'bi-info-circle', view: 'about' },
     { name: 'Contact Us', icon: 'bi-telephone', view: 'contact' },
-    { name: 'Print Ticket', icon: 'bi-printer', view: 'printTicket' },
+    // { name: 'Print Ticket', icon: 'bi-printer', view: 'printTicket' },
     { name: 'Gallery', icon: 'bi-images', view: 'gallery' },
     { name: 'Privacy', icon: 'bi-shield-lock', view: 'privacy' },
   ];

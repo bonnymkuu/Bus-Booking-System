@@ -5,8 +5,6 @@ import vip from "../assets/images/vip.png";
 import wifi from "../assets/images/wifi.png";
 import mobileBackgroundImage from "../assets/images/busmobile.jpg";
 import busImage3 from "../assets/images/bus7.jpg";
-import save from "../assets/images/save.png";
-import multiple from "../assets/images/multiple.png";
 import parcel from "../assets/images/parcel.png";
 import fleet from "../assets/images/busplain.png";
 import busRoutes from "../assets/images/routes.png";
@@ -169,7 +167,7 @@ export default function Home({ navigateTo }) {
         {/* Content over background */}
         <div className="container position-relative z-1 text-center text-white">
           {/* Title */}
-          <h1 className="fw-bold display-5 mt-5 mb-5">
+          <h1 className="fw-bold display-5 mb-5">
             Explore with Safiri Express
           </h1>
 

@@ -64,8 +64,8 @@ export default function Gallery() {
     <div className="container-fluid py-5 bg-black">
       <div className="text-center mb-5">
         <h2 className="display-3 fw-bold text-white mb-3">Our Fleet Gallery</h2>
-        <p className="lead text-light mb-4">
-          Where <span className="text-primary">comfort</span> meets the open road
+        <p className=" text-light mb-4">
+          Where <span className="text-warning">comfort</span> meets the open road
         </p>
         <div className="d-flex justify-content-center">
           <div className="border-bottom border-primary border-3" style={{ width: '100px' }}></div>
@@ -133,7 +133,7 @@ export default function Gallery() {
         <h3 className="text-light mb-4">Ready to Experience the Difference?</h3>
         <p className="text-secondary mb-4">Our fleet is more than just transportation - it's your mobile sanctuary</p>
         <button className="btn btn-primary btn-lg px-5 py-3 rounded-pill shadow">
-          Book Your Premium Ride Now <i className="bi bi-arrow-right ms-2"></i>
+          Book Your Ride Now <i className="bi bi-arrow-right ms-2"></i>
         </button>
       </div>
     </div>

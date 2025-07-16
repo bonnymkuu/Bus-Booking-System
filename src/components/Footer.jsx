@@ -47,11 +47,7 @@ export default function Footer({ navigateTo }) {
               <li><a href="#" className="text-light text-decoration-none py-1 d-block">Nairobi to Malindi</a></li>
               <li><a href="#" className="text-light text-decoration-none py-1 d-block">Lamu to Nairobi</a></li>
               <li><a href="#" className="text-light text-decoration-none py-1 d-block">Nairobi to Kampala</a></li>
-              <li><a href="#" className="text-light text-decoration-none py-1 d-block">Mombasa to Busia</a></li>
               <li><a href="#" className="text-light text-decoration-none py-1 d-block">Mombasa to Lamu</a></li>
-              <li><a href="#" className="text-light text-decoration-none py-1 d-block">Mombasa to Kitale</a></li>
-              <li><a href="#" className="text-light text-decoration-none py-1 d-block">Nairobi to Nakuru</a></li>
-              <li><a href="#" className="text-light text-decoration-none py-1 d-block">Mombasa to Malindi</a></li>
             </ul>
           </div>
           
