@@ -32,14 +32,12 @@ export default function Contact() {
 
   return (
     <div
-      className="container py-5"
+      className="container py-5 position-relative hero-bg-image d-flex align-items-center"
       style={{
         backgroundImage: `url(${Background})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
         minHeight: "100vh",
-        position: "relative",
       }}
     >
       <div

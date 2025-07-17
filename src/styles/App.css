@@ -103,3 +103,89 @@
 .read-the-docs {
   color: #888;
 }
+
+@keyframes rotateIcons {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(360deg);
+  }
+  50% {
+    transform: rotate(360deg);
+  }
+  75% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.rotate-icon {
+  animation: rotateIcons 6s infinite;
+  animation-timing-function: ease-in-out;
+}
+
+
+
+@keyframes scalePulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+.badge-animate {
+  animation: scalePulse 2s infinite ease-in-out;
+  display: inline-block;
+}
+
+.badge-animate-delay {
+  animation-delay: 1s; /* Starts halfway through the first badge's cycle */
+}
+
+
+
+
+
+.bus-fade-in {
+  opacity: 0;
+  transform: translateX(100px) rotate(-2deg);
+  transition: transform 2s ease, opacity 2s ease;
+}
+
+.bus-fade-in.visible {
+  opacity: 1;
+  transform: translateX(0) rotate(0);
+}
+
+
+
+
+
+.animated-gradient-header {
+  background: linear-gradient(
+    135deg,
+    rgb(4, 75, 60),
+    rgb(2, 40, 97),
+    rgb(4, 75, 60),
+    rgb(2, 40, 97)
+  );
+  background-size: 400% 400%;
+  animation: diagonalSweep 15s linear infinite;
+}
+
+@keyframes diagonalSweep {
+  0% {
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+
+

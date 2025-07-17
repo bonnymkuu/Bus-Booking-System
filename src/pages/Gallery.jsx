@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState, useEffect, useRef } from 'react';
+import Typewriter from "typewriter-effect";
 import busImage1 from '../assets/images/bus1.jpg'; 
 import busImage2 from '../assets/images/bus2.jpg';
 import busImage3 from '../assets/images/bus3.jpg';
@@ -63,7 +64,16 @@ export default function Gallery() {
   return (
     <div className="container-fluid py-5 bg-black">
       <div className="text-center mb-5">
-        <h2 className="display-3 fw-bold text-white mb-3">Our Fleet Gallery</h2>
+        <h2 className="display-3 fw-bold text-white mb-3">
+          <Typewriter
+              options={{
+                strings: ["Our Fleet Gallery"],
+                autoStart: true,
+                loop: true,
+                delay: 75,
+              }}
+            />
+        </h2>
         <p className=" text-light mb-4">
           Where <span className="text-warning">comfort</span> meets the open road
         </p>

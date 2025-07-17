@@ -20,7 +20,7 @@ export default function Header({ navigateTo }) {
   ];
 
   return (
-    <header className="navbar navbar-expand-lg navbar-dark shadow-sm" style={{backgroundImage: 'linear-gradient(145deg,rgb(4, 58, 75) 0%,rgb(2, 50, 122) 100%)'}}>
+    <header className="navbar navbar-expand-lg navbar-dark shadow-sm animated-gradient-header">
       <div className="container">
         <a href="#" onClick={() => navigateTo('home')} className="navbar-brand d-flex align-items-center">
           <h1>Safiri Express</h1>

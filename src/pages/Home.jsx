@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import Typewriter from "typewriter-effect";
 import seat from "../assets/images/seat.png";
 import power from "../assets/images/power.png";
 import vip from "../assets/images/vip.png";
@@ -54,7 +55,7 @@ export default function Home({ navigateTo }) {
 
   const [filteredFrom, setFilteredFrom] = useState([]);
   const [filteredTo, setFilteredTo] = useState([]);
-
+  const [swapped, setSwapped] = useState(false);
   const [whyUsRef, whyUsVisible] = useFadeInOnScroll();
   const [servicesRef, servicesVisible] = useFadeInOnScroll();
 
@@ -122,6 +123,15 @@ export default function Home({ navigateTo }) {
   };
 
   useEffect(() => {
+    const interval = setInterval(() => {
+      setSwapped(true);
+      setTimeout(() => setSwapped(false), 3000); // swap duration
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
     setFilteredFrom(offices);
     setFilteredTo(offices);
   }, []);
@@ -134,6 +144,31 @@ export default function Home({ navigateTo }) {
 
   // Inside your component:
   const dateInputRef = useRef(null);
+
+  const busRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(entry.target); // stop observing after visible
+        }
+      },
+      { threshold: 0.4 }
+    );
+
+    if (busRef.current) {
+      observer.observe(busRef.current);
+    }
+
+    return () => {
+      if (busRef.current) {
+        observer.unobserve(busRef.current);
+      }
+    };
+  }, []);
 
   return (
     <div className="position-relative">
@@ -168,7 +203,14 @@ export default function Home({ navigateTo }) {
         <div className="container position-relative z-1 text-center text-white">
           {/* Title */}
           <h1 className="fw-bold display-5 mb-5">
-            Explore with Safiri Express
+            <Typewriter
+              options={{
+                strings: ["Explore with Safiri Express"],
+                autoStart: true,
+                loop: true,
+                delay: 75,
+              }}
+            />
           </h1>
 
           {/* Description */}
@@ -307,7 +349,7 @@ export default function Home({ navigateTo }) {
                 <img
                   src={vip}
                   alt="VIP"
-                  className="img-fluid mb-2"
+                  className="img-fluid mb-2 rotate-icon"
                   style={{ height: "50px" }}
                 />
                 <h6 className="mb-0">Premium Comfort</h6>
@@ -318,7 +360,7 @@ export default function Home({ navigateTo }) {
                 <img
                   src={wifi}
                   alt="WiFi"
-                  className="img-fluid mb-2"
+                  className="img-fluid mb-2 rotate-icon"
                   style={{ height: "50px" }}
                 />
                 <h6 className="mb-0">Free WiFi</h6>
@@ -329,7 +371,7 @@ export default function Home({ navigateTo }) {
                 <img
                   src={power}
                   alt="Power"
-                  className="img-fluid mb-2"
+                  className="img-fluid mb-2 rotate-icon"
                   style={{ height: "50px" }}
                 />
                 <h6 className="mb-0">Charging Ports</h6>
@@ -340,7 +382,7 @@ export default function Home({ navigateTo }) {
                 <img
                   src={seat}
                   alt="Seat"
-                  className="img-fluid mb-2"
+                  className="img-fluid mb-2 rotate-icon"
                   style={{ height: "50px" }}
                 />
                 <h6 className="mb-0">Spacious Seats</h6>
@@ -360,13 +402,23 @@ export default function Home({ navigateTo }) {
           <div className="col">
             <div className="card text-center h-100 shadow-sm p-3 border-0">
               <img
+                ref={busRef}
                 src={parcel}
                 alt="Express Delivery"
                 className="card-img-top mx-auto"
                 style={{ maxWidth: "100%", height: "auto" }}
               />
               <div className="card-body">
-                <h5 className="card-title fw-bold">Express Delivery</h5>
+                <h5 className="card-title fw-bold">
+                  <Typewriter
+                    options={{
+                      strings: ["Express Delivery"],
+                      autoStart: true,
+                      loop: true,
+                      delay: 75,
+                    }}
+                  />
+                </h5>
                 <p className="text-secondary">
                   Fast and secure parcel delivery services with real-time
                   tracking for your peace of mind.
@@ -379,13 +431,25 @@ export default function Home({ navigateTo }) {
           <div className="col">
             <div className="card text-center h-100 shadow-sm p-3 border-0">
               <img
+                ref={busRef}
                 src={fleet}
                 alt="Premium Fleet"
-                className="card-img-top mx-auto"
+                className={`card-img-top mx-auto bus-fade-in ${
+                  isVisible ? "visible" : ""
+                }`}
                 style={{ maxWidth: "100%", height: "auto" }}
               />
               <div className="card-body">
-                <h5 className="card-title fw-bold">Premium Fleet</h5>
+                <h5 className="card-title fw-bold">
+                  <Typewriter
+                    options={{
+                      strings: ["EPremium Fleet"],
+                      autoStart: true,
+                      loop: true,
+                      delay: 75,
+                    }}
+                  />
+                </h5>
                 <p className="text-secondary">
                   Modern, well-maintained buses equipped with comfortable
                   seating, charging ports, and climate control.
@@ -404,7 +468,16 @@ export default function Home({ navigateTo }) {
                 style={{ maxWidth: "100%", height: "auto" }}
               />
               <div className="card-body">
-                <h5 className="card-title fw-bold">Cross-Border Travel</h5>
+                <h5 className="card-title fw-bold">
+                  <Typewriter
+                    options={{
+                      strings: ["Cross-Border Travel"],
+                      autoStart: true,
+                      loop: true,
+                      delay: 75,
+                    }}
+                  />
+                </h5>
                 <p className="text-secondary">
                   Hassle-free international travel with dedicated routes
                   connecting major cities in Kenya, Uganda, and Tanzania.
@@ -417,21 +490,26 @@ export default function Home({ navigateTo }) {
 
       {/* App Download and Partner Logos */}
       <div className="container py-5 text-center d-flex flex-column flex-md-row justify-content-between align-items-center">
-        <div className="d-flex justify-content-center mb-4 mb-md-0 flex-wrap gap-3">
-          <a href="#" target="_blank" rel="noopener noreferrer">
-            <img
-              src={googlePlayBadge}
-              alt="Get it on Google Play"
-              style={{ height: "60px" }}
-            />
-          </a>
-          <a href="#" target="_blank" rel="noopener noreferrer">
-            <img
-              src={appStoreBadge}
-              alt="Download on the App Store"
-              style={{ height: "60px" }}
-            />
-          </a>
+        <div
+          className="badge-swap-container d-flex justify-content-center align-items-center"
+          style={{ gap: "20px" }} // You can adjust this value
+        >
+            <a href="#" target="_blank" rel="noopener noreferrer">
+              <img
+                src={googlePlayBadge}
+                alt="Get it on Google Play"
+                style={{ height: "60px" }}
+                className="badge-animate"
+              />
+            </a>
+            <a href="#" target="_blank" rel="noopener noreferrer">
+              <img
+                src={appStoreBadge}
+                alt="Download on the App Store"
+                style={{ height: "60px" }}
+                className="badge-animate badge-animate-delay"
+              />
+            </a>
         </div>
       </div>
     </div>
